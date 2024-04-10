@@ -7,20 +7,22 @@ part of 'home_page_classes.dart';
 // **************************************************************************
 
 BookingClass _$BookingClassFromJson(Map<String, dynamic> json) => BookingClass(
-      id: json['id'] as int,
+      id: json['id'] as String?,
       banner: json['banner'] as String?,
-      level: (json['level'] as List<dynamic>?)?.map((e) => e as int).toList(),
+      // level:
+      //     (json['level'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      level: json['levels'] as List<String>?,
       location: json['location'] as String?,
       title: json['title'] as String?,
-      createdForId: json['createdForId'] as int,
-      sportId: json['sportId'] as int,
-      sportName: json['sportName'] as String?,
+      createdForId: json['created_for_id'] as String,
+      sportId: json['sport_id'] as String,
+      sportName: json['sport_name'] as String?,
       icon: json['icon'] as String?,
-      daysOfWeek: (json['daysOfWeek'] as List<dynamic>)
-          .map((e) => DateTime.parse(e as String))
-          .toList(),
-      lat: (json['lat'] as num).toDouble(),
-      lon: (json['lon'] as num).toDouble(),
+      // daysOfWeek: (json['days_of_week'] as List<dynamic>)
+      //     .map((e) => DateTime.parse(e as String))
+      //     .toList(),
+      //lat: (json['lat'] as String).toDouble(),
+      //lon: (json['lon'] as String).toDouble(),
     );
 
 Map<String, dynamic> _$BookingClassToJson(BookingClass instance) =>
@@ -30,14 +32,14 @@ Map<String, dynamic> _$BookingClassToJson(BookingClass instance) =>
       'location': instance.location,
       'id': instance.id,
       'title': instance.title,
-      'createdForId': instance.createdForId,
-      'sportId': instance.sportId,
+      'created_for_id': instance.createdForId,
+      'sport_id': instance.sportId,
       'sportName': instance.sportName,
       'icon': instance.icon,
-      'daysOfWeek':
-          instance.daysOfWeek.map((e) => e.toIso8601String()).toList(),
-      'lat': instance.lat,
-      'lon': instance.lon,
+      // 'daysOfWeek':
+      //     instance.daysOfWeek.map((e) => e.toIso8601String()).toList(),
+      //'lat': instance.lat,
+      //'lon': instance.lon,
     };
 
 TrialClass _$TrialClassFromJson(Map<String, dynamic> json) => TrialClass(

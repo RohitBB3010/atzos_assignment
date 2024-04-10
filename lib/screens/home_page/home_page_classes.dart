@@ -5,17 +5,17 @@ part 'home_page_classes.g.dart';
 @JsonSerializable()
 class BookingClass {
   final String? banner;
-  final List<int>? level;
+  final List<String>? level;
   final String? location;
-  final int id;
+  final String? id;
   final String? title;
-  final int createdForId;
-  final int sportId;
+  final String createdForId;
+  final String sportId;
   final String? sportName;
   final String? icon;
-  final List<DateTime> daysOfWeek;
-  final double lat;
-  final double lon;
+  //final List<DateTime> daysOfWeek;
+  //final double lat;
+  //final double lon;
 
   factory BookingClass.fromJson(Map<String, dynamic> json) =>
       _$BookingClassFromJson(json);
@@ -30,9 +30,9 @@ class BookingClass {
     required this.sportId,
     this.sportName,
     this.icon,
-    required this.daysOfWeek,
-    required this.lat,
-    required this.lon,
+    //required this.daysOfWeek,
+    //required this.lat,
+    //required this.lon,
   });
 
   Map<String, dynamic> toJson() => _$BookingClassToJson(this);
