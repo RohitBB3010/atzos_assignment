@@ -1,3 +1,4 @@
+import 'package:atzos_assignment/screens/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,6 +26,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return HomePage();
   }
 }
