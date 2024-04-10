@@ -60,12 +60,12 @@ class CustomAppBar extends AppBar {
               : [
                   TextButton(
                     onPressed: () {},
-                    child: AutoSizeText(
+                    style: TextButton.styleFrom(
+                        side: const BorderSide(color: Colors.green)),
+                    child: const AutoSizeText(
                       'Login',
                       style: TextStyle(color: Colors.green),
                     ),
-                    style: TextButton.styleFrom(
-                        side: BorderSide(color: Colors.green)),
                   )
                 ],
         );

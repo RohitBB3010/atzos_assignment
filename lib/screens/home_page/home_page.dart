@@ -12,7 +12,8 @@ class HomePage extends StatelessWidget {
           titleText: 'Home',
           context: context,
         ),
-        bottomNavigationBar:
-            MediaQuery.of(context).size.width < 700 ? CustomBottomNav() : null);
+        bottomNavigationBar: MediaQuery.of(context).size.width < 700
+            ? const CustomBottomNav()
+            : null);
   }
 }
