@@ -30,17 +30,28 @@ class HomePage extends StatelessWidget {
             }
 
             if (state is HomePageDataLoadedState) {
-              print(state.levels);
               double screenWidth = MediaQuery.of(context).size.width;
               bool isSmallScreen = screenWidth <= 700 ? true : false;
               return SingleChildScrollView(
+                  child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.05),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const AutoSizeText('Here advertisement will come'),
                     SpacingConstants().heightBetweenFieldsMed(context),
+                    const AutoSizeText(
+                      'Classes',
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontSize: 30.0, fontWeight: FontWeight.bold),
+                    ),
+                    SpacingConstants().heightBetweenFieldsSmall(context),
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Wrap(
                             spacing: MediaQuery.of(context).size.width * 0.03,
@@ -48,15 +59,56 @@ class HomePage extends StatelessWidget {
                                 MediaQuery.of(context).size.height * 0.03,
                             children: state.bookingClasses!.map((bookingClass) {
                               return bookingClassCard(bookingClass,
-                                  state.levels, isSmallScreen, context);
+                                  state.levels, isSmallScreen, context, false);
                             }).toList(),
+                          ),
+                          SpacingConstants().heightBetweenFieldsLarge(context),
+                          const AutoSizeText(
+                            'Trial Classes',
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: 30.0, fontWeight: FontWeight.bold),
+                          ),
+                          SpacingConstants().heightBetweenFieldsSmall(context),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              children: [
+                                Wrap(
+                                  spacing:
+                                      MediaQuery.of(context).size.width * 0.03,
+                                  runSpacing:
+                                      MediaQuery.of(context).size.height * 0.03,
+                                  children:
+                                      state.bookingClasses!.map((bookingClass) {
+                                    return bookingClassCard(
+                                        bookingClass,
+                                        state.levels,
+                                        isSmallScreen,
+                                        context,
+                                        true);
+                                  }).toList(),
+                                ),
+                                SpacingConstants()
+                                    .heightBetweenFieldsLarge(context),
+                                const AutoSizeText(
+                                  'Plans',
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: 30.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SpacingConstants()
+                                    .heightBetweenFieldsSmall(context),
+                              ],
+                            ),
                           )
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
-              );
+              ));
             }
 
             return Container();
@@ -67,7 +119,7 @@ class HomePage extends StatelessWidget {
   }
 
   Card bookingClassCard(TrailBookClass bookingClass, List<String>? levels,
-      bool isSmallScreen, BuildContext context) {
+      bool isSmallScreen, BuildContext context, bool isTrial) {
     String? levelData;
     List<String> listLevels = [];
 
@@ -145,7 +197,7 @@ class HomePage extends StatelessWidget {
                 }
               },
               child: AutoSizeText(
-                'Book',
+                isTrial ? 'Free Trial' : 'Book',
                 maxLines: 1,
                 style: TextStyle(
                   color: bookingClass.level!.isNotEmpty

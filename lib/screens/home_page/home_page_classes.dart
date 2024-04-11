@@ -112,3 +112,19 @@ class Day {
     );
   }
 }
+
+class TeamMember {
+  String userName;
+  String avatar;
+  String? designation;
+
+  TeamMember({required this.userName, required this.avatar, this.designation});
+
+  factory TeamMember.fromJson(Map<String, dynamic> json) {
+    return TeamMember(
+      userName: json['username'] as String,
+      avatar: json['avatar'] as String,
+      designation: json['designation'] as String?,
+    );
+  }
+}

@@ -20,6 +20,7 @@ class HomePageCubit extends Cubit<HomePageState> {
     var bookingClassesData = response1.data['booking_classes'];
     var trialClassesData = response1.data['trial_classes'];
     var levelList = response1.data['level_list'];
+    var persons = response1.data['team'];
 
     List<String> levels =
         levelList.values.map<String>((value) => value.toString()).toList();
