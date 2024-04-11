@@ -1,23 +1,32 @@
+import 'dart:convert';
+
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xml2json/xml2json.dart';
 
 class HomePageCubit extends Cubit<HomePageState> {
   HomePageCubit() : super(HomePageState());
 
   Future<void> getDataWithClassesEmit() async {
-    List<BookingClass> bookingClassesList = [];
-    print('function called');
-    Dio dio = Dio();
-    Response response = await dio.get(
-        'https://devconnect.spyn.co/api/web/v4/homepage/index?venue_id=729');
-    List<dynamic> bookingClasses = response.data['booking_classes'];
+    List<TrailBookClass> bookingClassesList = [];
+    List<TrailBookClass> trialClassesList = [];
 
-    for (int i = 0; i < bookingClasses.length; i++) {
+    Dio dio = Dio();
+
+    Response response1 = await dio.get(
+        'https://devconnect.spyn.co/api/web/v4/homepage/index?venue_id=729');
+
+    var bookingClassesData = response1.data['booking_classes'];
+    var trialClassesData = response1.data['trial_classes'];
+    var levelList = response1.data['level_list'];
+
+    for (int i = 0; i < bookingClassesData.length; i++) {
       print(i);
-      BookingClass myClass = BookingClass.fromJson(bookingClasses[i]);
-      print(myClass);
+      TrailBookClass bookingClass =
+          TrailBookClass.fromJson(bookingClassesData[i]);
+      bookingClassesList.add(bookingClass);
     }
   }
 }

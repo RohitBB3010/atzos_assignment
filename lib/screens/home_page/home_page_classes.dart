@@ -1,180 +1,110 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'dart:convert';
 
-part 'home_page_classes.g.dart';
+class TrailBookClass {
+  String? banner;
+  List<String>? level;
+  String location;
+  int id;
+  String title;
+  int createdForId;
+  int sportId;
+  double lat;
+  double lon;
+  String sportName;
+  String icon;
+  List<Day>? daysOfWeek;
 
-@JsonSerializable()
-class BookingClass {
-  final String? banner;
-  final List<String>? level;
-  final String? location;
-  final String? id;
-  final String? title;
-  final String createdForId;
-  final String sportId;
-  final String? sportName;
-  final String? icon;
-  //final List<DateTime> daysOfWeek;
-  //final double lat;
-  //final double lon;
-
-  factory BookingClass.fromJson(Map<String, dynamic> json) =>
-      _$BookingClassFromJson(json);
-
-  BookingClass({
+  TrailBookClass({
+    required this.banner,
+    required this.level,
+    required this.location,
     required this.id,
-    this.banner,
-    this.level,
-    this.location,
-    this.title,
+    required this.title,
     required this.createdForId,
     required this.sportId,
-    this.sportName,
-    this.icon,
-    //required this.daysOfWeek,
-    //required this.lat,
-    //required this.lon,
-  });
-
-  Map<String, dynamic> toJson() => _$BookingClassToJson(this);
-}
-
-@JsonSerializable()
-class TrialClass {
-  final String? banner;
-  final List<int>? level;
-  final String? location;
-  final int id;
-  final String? title;
-  final int createdForId;
-  final int sportId;
-  final String? sportName;
-  final String? icon;
-  final List<DateTime> daysOfWeek;
-  final double? lat;
-  final double? lon;
-
-  factory TrialClass.fromJson(Map<String, dynamic> json) =>
-      _$TrialClassFromJson(json);
-
-  TrialClass({
-    required this.id,
-    this.banner,
-    this.level,
-    this.location,
-    this.title,
-    required this.createdForId,
-    required this.sportId,
-    this.sportName,
-    this.icon,
+    required this.lat,
+    required this.lon,
+    required this.sportName,
+    required this.icon,
     required this.daysOfWeek,
-    this.lat,
-    this.lon,
   });
 
-  Map<String, dynamic> toJson() => _$TrialClassToJson(this);
+  factory TrailBookClass.fromJson(Map<String, dynamic> json) {
+    return TrailBookClass(
+      banner: json['banner'] as String?,
+      level: _parseLevel(json['level']),
+      location: json['location'] as String,
+      id: int.parse(json['id'] as String),
+      title: json['title'] as String,
+      createdForId: int.parse(json['created_for_id'] as String),
+      sportId: int.parse(json['sport_id'] as String),
+      lat: double.parse(json['lat'] as String),
+      lon: double.parse(json['lon'] as String),
+      sportName: json['sport_name'] as String,
+      icon: json['icon'] as String,
+      daysOfWeek: (parseDayList(json['days_of_week'])),
+    );
+  }
+
+  static List<String>? _parseLevel(String? levelString) {
+    if (levelString == null) {
+      return [];
+    }
+    try {
+      final List<dynamic> parsedList = json.decode(levelString);
+      return parsedList.cast<String>().toList();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static List<Day>? parseDayList(String? data) {
+    if (data == null) return null; // Early return for null data
+
+    List<dynamic>? jsonData;
+    try {
+      jsonData = jsonDecode(data);
+    } catch (e) {
+      return null; // Return null on decode error
+    }
+
+    if (jsonData == null) return null; // Early return for null jsonData
+
+    List<Day>? daysList = [];
+    for (var item in jsonData) {
+      Day? day;
+      try {
+        day = Day(
+          day: item['day'] as int?,
+          sctid: item['sctid'] as int?,
+          startTime: item['start_time'] as String?,
+          endTime: item['end_time'] as String?,
+        );
+      } catch (e) {
+        // Handle potential exception during Day object creation (optional)
+      }
+      if (day != null) {
+        daysList.add(day);
+      }
+    }
+    return daysList;
+  }
 }
 
-@JsonSerializable()
-class InstallmentData {
-  final double amount;
-  final int dueNo;
-  final String dueUnit;
+class Day {
+  int? day;
+  int? sctid;
+  String? startTime;
+  String? endTime;
 
-  factory InstallmentData.fromJson(Map<String, dynamic> json) =>
-      _$InstallmentDataFromJson(json);
+  Day({this.day, this.sctid, this.startTime, this.endTime});
 
-  InstallmentData({
-    required this.amount,
-    required this.dueNo,
-    required this.dueUnit,
-  });
-
-  Map<String, dynamic> toJson() => _$InstallmentDataToJson(this);
-}
-
-@JsonSerializable()
-class MakeUpClassInfo {
-  int no_of_makeup_classes;
-  String makeup_class_type;
-
-  factory MakeUpClassInfo.fromJson(Map<String, dynamic> json) =>
-      _$MakeUpClassInfoFromJson(json);
-
-  MakeUpClassInfo({
-    required this.no_of_makeup_classes,
-    required this.makeup_class_type,
-  });
-
-  Map<String, dynamic> toJson() => _$MakeUpClassInfoToJson(this);
-}
-
-@JsonSerializable()
-class Plan {
-  final int id;
-  final String name;
-  final String type;
-  final int sessions;
-  final double fees;
-  final double? feesBackup;
-  final int duration;
-  final String durationUnit;
-  final String paymentType;
-  final List<InstallmentData> installmentData;
-  final int noOfInstallment;
-  final int installmentInterest;
-  final bool hasClass; // Assuming 'class' tag is empty but represents a class
-  final int maxClass;
-  final bool allowAllClasses;
-  final String maxClassInfo;
-  final List<String>? levels; // Assuming 'levels' tag might be empty
-  final int createdForId;
-  final String createdForModule;
-  final String note;
-  final bool privacy;
-  final bool autorenew;
-  final String autorenewType;
-  final bool makeupClass;
-  final MakeUpClassInfo? makeupClassInfo;
-  final bool trialPlan;
-  final int restrictStartDate;
-  final Map<String, dynamic>? restrictDateData; // Assuming data might be empty
-  final dynamic defaultDueDate; // Data type can vary
-  final int status;
-
-  factory Plan.fromJson(Map<String, dynamic> json) => _$PlanFromJson(json);
-
-  Plan({
-    required this.id,
-    required this.name,
-    required this.type,
-    required this.sessions,
-    required this.fees,
-    this.feesBackup,
-    required this.duration,
-    required this.durationUnit,
-    required this.paymentType,
-    required this.installmentData,
-    required this.noOfInstallment,
-    required this.installmentInterest,
-    required this.hasClass,
-    required this.maxClass,
-    required this.allowAllClasses,
-    required this.maxClassInfo,
-    this.levels,
-    required this.createdForId,
-    required this.createdForModule,
-    required this.note,
-    required this.privacy,
-    required this.autorenew,
-    required this.autorenewType,
-    required this.makeupClass,
-    this.makeupClassInfo,
-    required this.trialPlan,
-    required this.restrictStartDate,
-    this.restrictDateData,
-    this.defaultDueDate,
-    required this.status,
-  });
-
-  Map<String, dynamic> toJson() => _$PlanToJson(this);
+  factory Day.fromJson(Map<String, dynamic> json) {
+    return Day(
+      day: json['day'] as int?,
+      sctid: json['sctid'] as int?,
+      startTime: json['start_time'] as String?,
+      endTime: json['end_time'] as String?,
+    );
+  }
 }
