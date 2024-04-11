@@ -10,6 +10,7 @@ class HomePageCubit extends Cubit<HomePageState> {
   HomePageCubit() : super(HomePageState());
 
   Future<void> getDataWithClassesEmit() async {
+    emit(HomePageDataLoadingState());
     List<TrailBookClass> bookingClassesList = [];
     List<TrailBookClass> trialClassesList = [];
 
@@ -28,5 +29,7 @@ class HomePageCubit extends Cubit<HomePageState> {
           TrailBookClass.fromJson(bookingClassesData[i]);
       bookingClassesList.add(bookingClass);
     }
+
+    emit(HomePageDataLoadedState(bookingClasses: bookingClassesList));
   }
 }
