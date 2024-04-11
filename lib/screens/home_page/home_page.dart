@@ -100,6 +100,19 @@ class HomePage extends StatelessWidget {
                                 ),
                                 SpacingConstants()
                                     .heightBetweenFieldsSmall(context),
+                                SpacingConstants()
+                                    .heightBetweenFieldsLarge(context),
+                                if (state.teamMembers != null)
+                                  Wrap(
+                                    spacing:
+                                        MediaQuery.of(context).size.width * 0.1,
+                                    runSpacing:
+                                        MediaQuery.of(context).size.height *
+                                            0.03,
+                                    children: state.teamMembers!.map((member) {
+                                      return teamRow(member, context);
+                                    }).toList(),
+                                  )
                               ],
                             ),
                           )
@@ -252,6 +265,32 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget teamRow(TeamMember member, BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          radius: MediaQuery.of(context).size.width * 0.08,
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.person_2),
+        ),
+        SizedBox(
+            width: MediaQuery.of(context).size.width * 0.15,
+            child: AutoSizeText(
+              member.userName,
+              maxLines: 1,
+              style: TextStyle(fontSize: 25.0),
+            )),
+        if (member.designation != null)
+          AutoSizeText(
+            member.designation!,
+            maxLines: 1,
+            style: TextStyle(fontSize: 15.0),
+          ),
+      ],
     );
   }
 }

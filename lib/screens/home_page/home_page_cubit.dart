@@ -10,7 +10,7 @@ class HomePageCubit extends Cubit<HomePageState> {
   Future<void> getDataWithClassesEmit() async {
     emit(HomePageDataLoadingState());
     List<TrailBookClass> bookingClassesList = [];
-    List<TrailBookClass> trialClassesList = [];
+    List<TeamMember> membersList = [];
 
     Dio dio = Dio();
 
@@ -18,13 +18,16 @@ class HomePageCubit extends Cubit<HomePageState> {
         'https://devconnect.spyn.co/api/web/v4/homepage/index?venue_id=729');
 
     var bookingClassesData = response1.data['booking_classes'];
-    var trialClassesData = response1.data['trial_classes'];
     var levelList = response1.data['level_list'];
     var persons = response1.data['team'];
 
     List<String> levels =
         levelList.values.map<String>((value) => value.toString()).toList();
 
+    for (int i = 0; i < persons.length; i++) {
+      TeamMember member = TeamMember.fromJson(persons[i]);
+      membersList.add(member);
+    }
     for (int i = 0; i < bookingClassesData.length; i++) {
       TrailBookClass bookingClass =
           TrailBookClass.fromJson(bookingClassesData[i]);
@@ -32,6 +35,10 @@ class HomePageCubit extends Cubit<HomePageState> {
     }
 
     emit(HomePageDataLoadedState(
-        bookingClasses: bookingClassesList, levels: levels));
+      bookingClasses: bookingClassesList,
+      levels: levels,
+      trailClasses: bookingClassesList,
+      teamMembers: membersList,
+    ));
   }
 }
