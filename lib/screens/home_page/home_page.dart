@@ -26,28 +26,36 @@ class HomePage extends StatelessWidget {
         body: BlocBuilder<HomePageCubit, HomePageState>(
           builder: (context, state) {
             if (state is HomePageDataLoadingState) {
-              return AutoSizeText('Loading');
+              return const AutoSizeText('Loading');
             }
 
             if (state is HomePageDataLoadedState) {
-              return Column(
-                children: [
-                  const AutoSizeText('Here advertisement will come'),
-                  SpacingConstants().heightBetweenFieldsMed(context),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: [
-                        Wrap(
-                          children: state.bookingClasses!.map((bookingClass) {
-                            return bookingClassCard(
-                                bookingClass, state.levels, context);
-                          }).toList(),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+              print(state.levels);
+              double screenWidth = MediaQuery.of(context).size.width;
+              bool isSmallScreen = screenWidth <= 700 ? true : false;
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const AutoSizeText('Here advertisement will come'),
+                    SpacingConstants().heightBetweenFieldsMed(context),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: [
+                          Wrap(
+                            spacing: MediaQuery.of(context).size.width * 0.03,
+                            runSpacing:
+                                MediaQuery.of(context).size.height * 0.03,
+                            children: state.bookingClasses!.map((bookingClass) {
+                              return bookingClassCard(bookingClass,
+                                  state.levels, isSmallScreen, context);
+                            }).toList(),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               );
             }
 
@@ -58,10 +66,16 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Card bookingClassCard(
-      TrailBookClass bookingClass, List<String>? levels, BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+  Card bookingClassCard(TrailBookClass bookingClass, List<String>? levels,
+      bool isSmallScreen, BuildContext context) {
     String? levelData;
+    List<String> listLevels = [];
+
+    for (var element in bookingClass.level!) {
+      if (element - 1 < levels!.length) {
+        listLevels.add(levels[element - 1]);
+      }
+    }
 
     if (levels != null && bookingClass.level!.isNotEmpty) {
       levelData =
@@ -69,30 +83,76 @@ class HomePage extends StatelessWidget {
     } else {
       levelData = '';
     }
-
-    //groupDaysByTime(bookingClass.daysOfWeek!);
-    if (bookingClass.daysOfWeek != null) {
-      groupDaysByTime(bookingClass.daysOfWeek!);
-    }
     return Card(
-      elevation: 3.0,
-      child: SizedBox(
-        width: screenWidth <= 700
+      elevation: 7.0,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.02,
+          vertical: MediaQuery.of(context).size.height * 0.02,
+        ),
+        width: isSmallScreen
             ? MediaQuery.of(context).size.width * 0.8
-            : MediaQuery.of(context).size.width * 0.25,
+            : MediaQuery.of(context).size.width * 0.27,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Column(
+            Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AutoSizeText(
-                  bookingClass.title,
-                  maxLines: 1,
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  width: isSmallScreen
+                      ? MediaQuery.of(context).size.width * 0.3
+                      : MediaQuery.of(context).size.width * 0.05,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/classes_default.png'),
+                        fit: BoxFit.contain),
+                  ),
                 ),
-                AutoSizeText(' ${bookingClass.sportName} $levelData'),
-                AutoSizeText(bookingClass.location)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AutoSizeText(
+                      bookingClass.title,
+                      maxLines: 1,
+                      style: const TextStyle(fontSize: 18.0),
+                    ),
+                    AutoSizeText(
+                      ' ${bookingClass.sportName} $levelData',
+                      maxLines: 1,
+                      style: const TextStyle(fontSize: 13.0),
+                    ),
+                    AutoSizeText(
+                      bookingClass.location,
+                      maxLines: 1,
+                      style: const TextStyle(fontSize: 13.0),
+                    )
+                  ],
+                ),
               ],
+            ),
+            TextButton(
+              onPressed: () {
+                if (bookingClass.level!.isNotEmpty) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return levelAlertDialog(listLevels, context);
+                      });
+                }
+              },
+              child: AutoSizeText(
+                'Book',
+                maxLines: 1,
+                style: TextStyle(
+                  color: bookingClass.level!.isNotEmpty
+                      ? Colors.grey
+                      : Colors.green,
+                ),
+              ),
             )
           ],
         ),
@@ -100,22 +160,46 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Map<String, List<int>> groupDaysByTime(List<Day> days) {
-    Map<String, List<int>> groupedDays = {};
-
-    if (days.isNotEmpty) {
-      for (var day in days) {
-        String key = '${day.startTime} - ${day.endTime}';
-        if (!groupedDays.containsKey(key)) {
-          if (day.day != null) {
-            groupedDays[key] = [day.day!];
-          }
-        } else {
-          groupedDays[key]!.add(day.day!);
-        }
-      }
-    }
-
-    return groupedDays;
+  Dialog levelAlertDialog(List<String>? levels, BuildContext context) {
+    return Dialog(
+      child: Container(
+        padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.02,
+            horizontal: MediaQuery.of(context).size.width * 0.02),
+        width: MediaQuery.of(context).size.width * 0.4,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AutoSizeText(
+              'We require you to be assigned the ${levels.toString()} level to book this class.If you are our client and have this level assigned, you may BOOK by logging in.',
+              maxLines: 4,
+            ),
+            SpacingConstants().heightBetweenFieldsSmall(context),
+            const AutoSizeText(
+              'If you are not our client, please contact us at 9876543210 to BOOK this class',
+              maxLines: 4,
+            ),
+            SpacingConstants().heightBetweenFieldsSmall(context),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const AutoSizeText('Ok'),
+                ),
+                SpacingConstants().widthBetweenFieldsMid(context),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const AutoSizeText('Login'),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

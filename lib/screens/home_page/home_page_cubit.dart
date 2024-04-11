@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
 import 'package:dio/dio.dart';
