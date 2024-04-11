@@ -9,9 +9,11 @@ class HomePageDataLoadingState extends HomePageState {}
 class HomePageDataLoadedState extends HomePageState {
   List<TrailBookClass>? bookingClasses;
   List<TrailBookClass>? trailClasses;
+  List<String>? levels;
 
   HomePageDataLoadedState({
     this.bookingClasses,
     this.trailClasses,
+    this.levels,
   });
 }

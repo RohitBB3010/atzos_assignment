@@ -4,7 +4,6 @@ import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:xml2json/xml2json.dart';
 
 class HomePageCubit extends Cubit<HomePageState> {
   HomePageCubit() : super(HomePageState());
@@ -23,13 +22,16 @@ class HomePageCubit extends Cubit<HomePageState> {
     var trialClassesData = response1.data['trial_classes'];
     var levelList = response1.data['level_list'];
 
+    List<String> levels =
+        levelList.values.map<String>((value) => value.toString()).toList();
+
     for (int i = 0; i < bookingClassesData.length; i++) {
-      print(i);
       TrailBookClass bookingClass =
           TrailBookClass.fromJson(bookingClassesData[i]);
       bookingClassesList.add(bookingClass);
     }
 
-    emit(HomePageDataLoadedState(bookingClasses: bookingClassesList));
+    emit(HomePageDataLoadedState(
+        bookingClasses: bookingClassesList, levels: levels));
   }
 }

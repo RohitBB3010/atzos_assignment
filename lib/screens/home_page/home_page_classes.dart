@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class TrailBookClass {
   String? banner;
-  List<String>? level;
+  List<int>? level;
   String location;
   int id;
   String title;
@@ -32,7 +32,7 @@ class TrailBookClass {
   factory TrailBookClass.fromJson(Map<String, dynamic> json) {
     return TrailBookClass(
       banner: json['banner'] as String?,
-      level: _parseLevel(json['level']),
+      level: parseLevel(json['level']),
       location: json['location'] as String,
       id: int.parse(json['id'] as String),
       title: json['title'] as String,
@@ -46,29 +46,33 @@ class TrailBookClass {
     );
   }
 
-  static List<String>? _parseLevel(String? levelString) {
+  static List<int>? parseLevel(String? levelString) {
     if (levelString == null) {
       return [];
     }
     try {
       final List<dynamic> parsedList = json.decode(levelString);
-      return parsedList.cast<String>().toList();
+      List<int> returnData = [];
+      parsedList.forEach((element) {
+        returnData.add(int.parse(element));
+      });
+      return returnData;
     } catch (e) {
       return null;
     }
   }
 
   static List<Day>? parseDayList(String? data) {
-    if (data == null) return null; // Early return for null data
+    if (data == null) return null;
 
     List<dynamic>? jsonData;
     try {
       jsonData = jsonDecode(data);
     } catch (e) {
-      return null; // Return null on decode error
+      return null;
     }
 
-    if (jsonData == null) return null; // Early return for null jsonData
+    if (jsonData == null) return null;
 
     List<Day>? daysList = [];
     for (var item in jsonData) {
