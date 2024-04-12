@@ -6,6 +6,7 @@ import 'package:atzos_assignment/screens/home_page/home_page_cubit.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
@@ -100,8 +101,6 @@ class HomePage extends StatelessWidget {
                                 ),
                                 SpacingConstants()
                                     .heightBetweenFieldsSmall(context),
-                                SpacingConstants()
-                                    .heightBetweenFieldsLarge(context),
                                 if (state.teamMembers != null)
                                   Wrap(
                                     spacing:
@@ -110,7 +109,7 @@ class HomePage extends StatelessWidget {
                                         MediaQuery.of(context).size.height *
                                             0.03,
                                     children: state.teamMembers!.map((member) {
-                                      return teamRow(member, context);
+                                      return smallTeamRow(member, context);
                                     }).toList(),
                                   )
                               ],
@@ -268,29 +267,39 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget teamRow(TeamMember member, BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          radius: MediaQuery.of(context).size.width * 0.08,
-          backgroundColor: Colors.blue,
-          child: const Icon(Icons.person_2),
-        ),
-        SizedBox(
-            width: MediaQuery.of(context).size.width * 0.15,
-            child: AutoSizeText(
-              member.userName,
-              maxLines: 1,
-              style: TextStyle(fontSize: 25.0),
-            )),
-        if (member.designation != null)
-          AutoSizeText(
-            member.designation!,
-            maxLines: 1,
-            style: TextStyle(fontSize: 15.0),
+  Widget smallTeamRow(TeamMember member, BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: MediaQuery.of(context).size.width * 0.025,
+            backgroundColor: Colors.amber,
+            child: Icon(
+              Icons.person,
+              color: Colors.white,
+              size: MediaQuery.of(context).size.width * 0.03,
+            ),
           ),
-      ],
+          Center(
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.15,
+                child: AutoSizeText(
+                  member.userName,
+                  maxLines: 1,
+                  style: const TextStyle(fontSize: 20.0),
+                )),
+          ),
+          if (member.designation != null)
+            AutoSizeText(
+              member.designation!,
+              maxLines: 1,
+              style: const TextStyle(fontSize: 15.0),
+            ),
+        ],
+      ),
     );
   }
 }

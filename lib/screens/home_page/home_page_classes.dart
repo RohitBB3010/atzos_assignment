@@ -128,3 +128,118 @@ class TeamMember {
     );
   }
 }
+
+// class Plan {
+//   int id;
+//   String? name;
+//   String? type;
+//   int sessions;
+//   double fees;
+//   double feesBackup;
+//   int duration;
+//   String? durationUnit;
+//   String? paymentType;
+//   int numberOfInstallment;
+//   int installmentInterest;
+//   String classType;
+//   int maxClass;
+//   int allowAllClasses;
+//   String maxClassInfo;
+//   List<String> levels;
+//   int createdForId;
+//   String createdForModule;
+//   String note;
+//   int privacy;
+//   int autoRenew;
+//   String renewType;
+//   int makeUpClass;
+//   String makeUpClassInfo;
+//   int trialPlan;
+//   int restrictStartDate;
+//   int defaultDueState;
+//   int status;
+
+//   Plan({
+//     required this.id,
+//     required this.name,
+//     required this.type,
+//     required this.sessions,
+//     required this.fees,
+//     required this.feesBackup,
+//     required this.duration,
+//     required this.durationUnit,
+//     required this.paymentType,
+//     required this.numberOfInstallment,
+//     required this.installmentInterest,
+//     required this.classType,
+//     required this.maxClass,
+//     required this.allowAllClasses,
+//     required this.maxClassInfo,
+//     required this.levels,
+//     required this.createdForId,
+//     required this.createdForModule,
+//     required this.note,
+//     required this.privacy,
+//     required this.autoRenew,
+//     required this.renewType,
+//     required this.makeUpClass,
+//     required this.makeUpClassInfo,
+//     required this.trialPlan,
+//     required this.restrictStartDate,
+//     required this.defaultDueState,
+//     required this.status,
+//   });
+
+//   factory Plan.fromJson(Map<String, dynamic> json) {
+//     return Plan(
+//       id: int.parse(json['id'] as String),
+//       name: json['name'] as String?,
+//       type: json['type'] as String?,
+//       sessions: int.parse(json['sessions'] as String),
+//       fees: double.parse(json['fees'] as String),
+//       feesBackup: double.parse(json['fees_backup'] as String),
+//       duration: int.parse(json['duration'] as String),
+//       durationUnit: json['duration_unit'] as String? ?? "",
+//       paymentType: json['payment_type'] as String?,
+//       numberOfInstallment: int.parse(json['no_of_installment']),
+//       installmentInterest: int.parse(json['installment_interest']),
+//       classType: json['class'] as String,
+//       maxClass: json['max_class'] as int,
+//       allowAllClasses: json['allow_all_classes'] as int,
+//       maxClassInfo: json['max_class_info'] as String,
+//       levels: List<String>.from(json['levels'] ?? []),
+//       createdForId: json['created_for_id'] as int,
+//       createdForModule: json['created_for_module'] as String,
+//       note: json['note'] as String,
+//       privacy: json['privacy'] as int,
+//       autoRenew: json['autorenew'] as int,
+//       renewType: json['autorenew_type'] as String,
+//       makeUpClass: json['makeup_class'] as int,
+//       makeUpClassInfo: json['makeup_class_info'] as String,
+//       trialPlan: json['trial_plan'] as int,
+//       restrictStartDate: json['restrict_start_date'] as int,
+//       defaultDueState: json['default_due_date'] as int,
+//       status: json['status'] as int,
+//     );
+//   }
+// }
+
+class Plan {
+  int? duration;
+  int? sessions;
+  String? name;
+  String? durationUnit;
+  double? fees;
+
+  Plan({this.duration, this.sessions, this.name, this.durationUnit, this.fees});
+
+  factory Plan.fromJson(Map<String, dynamic> json) {
+    return Plan(
+      duration: int.parse(json['duration']),
+      sessions: int.parse(json['sessions']),
+      name: json['name'] as String?,
+      durationUnit: json['duration_unit'] as String?,
+      fees: double.parse(json['fees']),
+    );
+  }
+}

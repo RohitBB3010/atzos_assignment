@@ -35,6 +35,7 @@ flutter:
   assets:
     - assets/spyn_logo.jpeg
     - assets/classes_default.png
+    - assets/avatar_image.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
