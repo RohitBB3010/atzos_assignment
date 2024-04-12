@@ -110,7 +110,9 @@ class _ClassesPageState extends State<ClassesPage> {
           onChanged: (String? value) {
             setState(() {
               searchClasses = widget.displayClasses.where((element) {
-                return element.title.contains(value!.toLowerCase());
+                return element.title
+                    .toLowerCase()
+                    .contains(value!.toLowerCase());
               }).toList();
             });
           },

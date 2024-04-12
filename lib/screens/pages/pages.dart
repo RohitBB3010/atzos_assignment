@@ -71,7 +71,9 @@ class _PagesState extends State<Pages> {
           onChanged: (String? value) {
             setState(() {
               searchPlans = widget.plansList.where((element) {
-                return element.name.contains(value!.toLowerCase());
+                return element.name
+                    .toLowerCase()
+                    .contains(value!.toLowerCase());
               }).toList();
             });
           },
@@ -100,21 +102,30 @@ class _PagesState extends State<Pages> {
         decoration: BoxDecoration(
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(10.0)),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          AutoSizeText(
-            '${plan.duration} ${plan.durationUnit} $sessionsData',
-            maxLines: 1,
-            style: const TextStyle(fontSize: 18.0),
-          ),
-          AutoSizeText(
-            plan.name,
-            style: const TextStyle(fontSize: 13.0),
-          ),
-          SpacingConstants().heightBetweenFieldsSmall(context),
-          Row(
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Center(
+                child: CircleAvatar(
+                    radius: MediaQuery.of(context).size.width * 0.045,
+                    child: AutoSizeText(
+                      plan.name[0].toUpperCase(),
+                      maxLines: 1,
+                      style: const TextStyle(fontSize: 25.0),
+                    )),
+              ),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                AutoSizeText(
+                  plan.name,
+                  maxLines: 1,
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                AutoSizeText(
+                  '${plan.duration} ${plan.durationUnit} $sessionsData',
+                  style: const TextStyle(fontSize: 13.0),
+                ),
+              ]),
               Column(
                 children: [
                   AutoSizeText(
@@ -125,25 +136,24 @@ class _PagesState extends State<Pages> {
                     ' + tax Rs.${taxAmount.toString()}',
                     style: const TextStyle(fontSize: 13.0),
                   ),
+                  SizedBox(
+                    width: isSmallScreen
+                        ? MediaQuery.of(context).size.width * 0.2
+                        : MediaQuery.of(context).size.width * 0.07,
+                    child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.all(0)),
+                        child: const AutoSizeText(
+                          'Book',
+                          overflow: TextOverflow.clip,
+                          softWrap: false,
+                          style: TextStyle(fontSize: 10.0),
+                        )),
+                  )
                 ],
               ),
-              SizedBox(
-                width: isSmallScreen
-                    ? MediaQuery.of(context).size.width * 0.2
-                    : MediaQuery.of(context).size.width * 0.07,
-                child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(padding: EdgeInsets.all(0)),
-                    child: const AutoSizeText(
-                      'Book',
-                      overflow: TextOverflow.clip,
-                      softWrap: false,
-                      style: TextStyle(fontSize: 10.0),
-                    )),
-              )
-            ],
-          )
-        ]),
+            ]),
       ),
     );
   }
