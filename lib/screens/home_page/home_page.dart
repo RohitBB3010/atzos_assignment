@@ -5,9 +5,9 @@ import 'package:atzos_assignment/screens/classes_page/classes_page.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_cubit.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
+import 'package:atzos_assignment/screens/pages/pages.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maps_launcher/maps_launcher.dart';
@@ -35,6 +35,14 @@ class HomePage extends StatelessWidget {
             }
 
             if (state is HomePageDataLoadedState) {
+              List<TrailBookClass> limitedBookClasses =
+                  List.from(state.bookingClasses!.take(3));
+
+              List<TrailBookClass> limitedTrailClass =
+                  List.from(state.trailClasses!.take(3));
+
+              List<Plan> limitedPlans = List.from(state.plans!.take(3));
+
               double screenWidth = MediaQuery.of(context).size.width;
               bool isSmallScreen = screenWidth <= 900 ? true : false;
               return SingleChildScrollView(
@@ -46,19 +54,7 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        //const AutoSizeText('Here advertisement will come'),
                         SpacingConstants().heightBetweenFieldsSmall(context),
-                        ElevatedButton(
-                            onPressed: () {
-                              print(state.bookingClasses);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ClassesPage(
-                                          displayClasses: state.bookingClasses!,
-                                          levels: state.levels!)));
-                            },
-                            child: AutoSizeText('Take')),
                         Row(
                           children: [
                             if (!isSmallScreen)
@@ -204,11 +200,26 @@ class HomePage extends StatelessWidget {
                             ],
                           ),
                         SpacingConstants().heightBetweenFieldsMed(context),
-                        const AutoSizeText(
-                          'Classes',
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: 30.0, fontWeight: FontWeight.bold),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const AutoSizeText(
+                              'Classes',
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: 30.0, fontWeight: FontWeight.bold),
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ClassesPage(
+                                        displayClasses: state.bookingClasses!,
+                                        levels: state.levels!);
+                                  }));
+                                },
+                                child: const AutoSizeText('See More'))
+                          ],
                         ),
                         SpacingConstants().heightBetweenFieldsSmall(context),
                         SizedBox(
@@ -222,7 +233,7 @@ class HomePage extends StatelessWidget {
                                 runSpacing:
                                     MediaQuery.of(context).size.height * 0.03,
                                 children:
-                                    state.bookingClasses!.map((bookingClass) {
+                                    limitedBookClasses.map((bookingClass) {
                                   return bookingClassCard(
                                       bookingClass,
                                       state.levels,
@@ -233,12 +244,30 @@ class HomePage extends StatelessWidget {
                               ),
                               SpacingConstants()
                                   .heightBetweenFieldsMed(context),
-                              const AutoSizeText(
-                                'Trial Classes',
-                                maxLines: 1,
-                                style: TextStyle(
-                                    fontSize: 30.0,
-                                    fontWeight: FontWeight.bold),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const AutoSizeText(
+                                    'Trial Classes',
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        fontSize: 30.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return ClassesPage(
+                                              displayClasses:
+                                                  state.bookingClasses!,
+                                              levels: state.levels!);
+                                        }));
+                                      },
+                                      child: const AutoSizeText('See More'))
+                                ],
                               ),
                               SpacingConstants()
                                   .heightBetweenFieldsSmall(context),
@@ -254,8 +283,8 @@ class HomePage extends StatelessWidget {
                                       runSpacing:
                                           MediaQuery.of(context).size.height *
                                               0.03,
-                                      children: state.bookingClasses!
-                                          .map((bookingClass) {
+                                      children:
+                                          limitedTrailClass.map((bookingClass) {
                                         return bookingClassCard(
                                             bookingClass,
                                             state.levels,
@@ -302,12 +331,30 @@ class HomePage extends StatelessWidget {
                                     ),
                                     SpacingConstants()
                                         .heightBetweenFieldsMed(context),
-                                    const AutoSizeText(
-                                      'Plans',
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontSize: 30.0,
-                                          fontWeight: FontWeight.bold),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const AutoSizeText(
+                                          'Plans',
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              fontSize: 30.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) {
+                                                return Pages(
+                                                  plansList: state.plans!,
+                                                );
+                                              }));
+                                            },
+                                            child:
+                                                const AutoSizeText('See More'))
+                                      ],
                                     ),
                                     SpacingConstants()
                                         .heightBetweenFieldsSmall(context),
@@ -318,7 +365,7 @@ class HomePage extends StatelessWidget {
                                       runSpacing:
                                           MediaQuery.of(context).size.height *
                                               0.03,
-                                      children: state.plans!.map((plan) {
+                                      children: limitedPlans.map((plan) {
                                         return planCard(
                                             plan, isSmallScreen, context);
                                       }).toList(),
