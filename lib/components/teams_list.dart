@@ -51,11 +51,12 @@ class _TeamsListState extends State<TeamsList> {
                 });
               },
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   AutoSizeText(isExpanded ? 'See Less' : 'See More'),
                   Icon(isExpanded
-                      ? Icons.arrow_circle_up_outlined
-                      : Icons.arrow_circle_down_outlined)
+                      ? Icons.arrow_upward_outlined
+                      : Icons.arrow_downward_outlined)
                 ],
               )),
         ),

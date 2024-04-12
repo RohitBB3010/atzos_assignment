@@ -382,7 +382,46 @@ class HomePage extends StatelessWidget {
                                         .heightBetweenFieldsLarge(context),
                                     TeamsList(
                                         teamList: state.teamMembers!,
-                                        isSmallScreen: isSmallScreen)
+                                        isSmallScreen: isSmallScreen),
+                                    SpacingConstants()
+                                        .heightBetweenFieldsLarge(context),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AutoSizeText(
+                                              'Join Us',
+                                              style: TextStyle(
+                                                  fontSize: 25.0,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            AutoSizeText(
+                                              'You can select to join from a list of classes',
+                                              style: TextStyle(
+                                                fontSize: 15.0,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ClassesPage(
+                                                              displayClasses: state
+                                                                  .bookingClasses!,
+                                                              levels: state
+                                                                  .levels!)));
+                                            },
+                                            child: AutoSizeText('Select Class'))
+                                      ],
+                                    )
                                   ],
                                 ),
                               )
