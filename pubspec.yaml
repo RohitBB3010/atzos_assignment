@@ -23,6 +23,8 @@ dependencies:
   intl: ^0.19.0
   flutter_social_button: ^1.1.4+1
   font_awesome_flutter: ^10.7.0
+  maps_launcher: ^2.2.1
+  html: ^0.15.4
 
 dev_dependencies:
   flutter_test:
@@ -38,6 +40,7 @@ flutter:
     - assets/spyn_logo.jpeg
     - assets/classes_default.png
     - assets/avatar_image.jpg
+    - assets/spyn_advert.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:html/parser.dart' as htmlparser;
 
 class TrailBookClass {
   String? banner;
@@ -250,6 +251,7 @@ class Plan {
 }
 
 class BasicData {
+  String title;
   String phoneNumber;
   String email;
   String website;
@@ -259,20 +261,25 @@ class BasicData {
   String terms;
   String privacyPolicy;
   String countryCode;
+  HTMLData? htmlData;
 
-  BasicData(
-      {required this.phoneNumber,
-      required this.email,
-      required this.additionalInfo,
-      required this.address,
-      required this.website,
-      required this.socialMediaLinks,
-      required this.terms,
-      required this.privacyPolicy,
-      required this.countryCode});
+  BasicData({
+    required this.title,
+    required this.phoneNumber,
+    required this.email,
+    required this.additionalInfo,
+    required this.address,
+    required this.website,
+    required this.socialMediaLinks,
+    required this.terms,
+    required this.privacyPolicy,
+    required this.countryCode,
+    this.htmlData,
+  });
 
   factory BasicData.fromJson(Map<String, dynamic> json) {
     return BasicData(
+      title: json['title'],
       website: json['website'],
       phoneNumber: json['phone'],
       email: json['email'],
@@ -280,6 +287,7 @@ class BasicData {
       address: json['address'],
       privacyPolicy: json['privacy_policy'],
       terms: json['terms'],
+      htmlData: HTMLData.fromHTML(json['description']),
       additionalInfo: jsonToInfoList(json['additional_info']),
       socialMediaLinks: jsonStringToMap(json['social_link']),
     );
@@ -329,5 +337,47 @@ class AdditionalInfo {
         title: json['title'],
         visibleTo: json['visible_to'],
         descpription: json['description']);
+  }
+}
+
+class HTMLData {
+  late String description;
+  late String testLink;
+  late String externalLinkText;
+  late String externalLinkUrl;
+
+  HTMLData({
+    required this.description,
+    required this.testLink,
+    required this.externalLinkText,
+    required this.externalLinkUrl,
+  });
+
+  factory HTMLData.fromHTML(String htmlString) {
+    // Parse the HTML string
+    final document = htmlparser.parse(htmlString);
+
+    // Extract description from the first paragraph
+    final descriptionParagraph = document.getElementsByTagName('p')[0];
+    final description = descriptionParagraph.text;
+
+    // Extract test link from the second paragraph
+    final testLinkParagraph = document.getElementsByTagName('p')[1];
+    final testLink =
+        testLinkParagraph.getElementsByTagName('a')[0].attributes['href'] ?? '';
+
+    // Extract external link text and URL from the third paragraph
+    final externalLinkParagraph = document.getElementsByTagName('p')[2];
+    final externalLinkElement =
+        externalLinkParagraph.getElementsByTagName('a')[0];
+    final externalLinkText = externalLinkElement.text;
+    final externalLinkUrl = externalLinkElement.attributes['href'] ?? '';
+
+    return HTMLData(
+      description: description,
+      testLink: testLink,
+      externalLinkText: externalLinkText,
+      externalLinkUrl: externalLinkUrl,
+    );
   }
 }

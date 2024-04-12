@@ -6,8 +6,10 @@ import 'package:atzos_assignment/screens/home_page/home_page_cubit.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -32,36 +34,71 @@ class HomePage extends StatelessWidget {
 
             if (state is HomePageDataLoadedState) {
               double screenWidth = MediaQuery.of(context).size.width;
-              bool isSmallScreen = screenWidth <= 700 ? true : false;
+              bool isSmallScreen = screenWidth <= 900 ? true : false;
               return SingleChildScrollView(
                   child: Column(
                 children: [
-                  isSmallScreen
-                      ? footerSmall(state.footerInfo!, context)
-                      : footerLarge(state.footerInfo!, context),
                   Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: MediaQuery.of(context).size.width * 0.05),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const AutoSizeText('Here advertisement will come'),
-                        SpacingConstants().heightBetweenFieldsMed(context),
-                        const AutoSizeText(
-                          'Plans',
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: 30.0, fontWeight: FontWeight.bold),
-                        ),
+                        //const AutoSizeText('Here advertisement will come'),
                         SpacingConstants().heightBetweenFieldsSmall(context),
-                        Wrap(
-                          spacing: MediaQuery.of(context).size.width * 0.02,
-                          runSpacing: MediaQuery.of(context).size.height * 0.03,
-                          children: state.plans!.map((plan) {
-                            return planCard(plan, isSmallScreen, context);
-                          }).toList(),
+                        Row(
+                          children: [
+                            if (!isSmallScreen)
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: Colors.white),
+                                    image: const DecorationImage(
+                                        image: AssetImage(
+                                            'assets/spyn_advert.jpeg'),
+                                        fit: BoxFit.fill)),
+                              )
+                          ],
                         ),
-                        SpacingConstants().heightBetweenFieldsLarge(context),
+                        if (isSmallScreen)
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.88,
+                            height: MediaQuery.of(context).size.height * 0.3,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: Colors.white),
+                                image: const DecorationImage(
+                                    image:
+                                        AssetImage('assets/spyn_advert.jpeg'),
+                                    fit: BoxFit.fill)),
+                          ),
+                        SpacingConstants().heightBetweenFieldsSmall(context),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AutoSizeText(
+                              state.footerInfo!.title,
+                              style: const TextStyle(
+                                  fontSize: 25.0, fontWeight: FontWeight.bold),
+                            ),
+                            AutoSizeText(
+                              state.footerInfo!.htmlData!.description
+                                  .toString(),
+                              style: const TextStyle(fontSize: 15.0),
+                            ),
+                            const AutoSizeText(
+                              'Test :',
+                              style: TextStyle(fontSize: 15.0),
+                            ),
+                            const AutoSizeText(
+                              'External String :',
+                              style: TextStyle(fontSize: 15.0),
+                            )
+                          ],
+                        ),
                         const AutoSizeText(
                           'Classes',
                           maxLines: 1,
@@ -123,6 +160,29 @@ class HomePage extends StatelessWidget {
                                       }).toList(),
                                     ),
                                     SpacingConstants()
+                                        .heightBetweenFieldsMed(context),
+                                    const AutoSizeText(
+                                      'Plans',
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 30.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SpacingConstants()
+                                        .heightBetweenFieldsSmall(context),
+                                    Wrap(
+                                      spacing:
+                                          MediaQuery.of(context).size.width *
+                                              0.03,
+                                      runSpacing:
+                                          MediaQuery.of(context).size.height *
+                                              0.03,
+                                      children: state.plans!.map((plan) {
+                                        return planCard(
+                                            plan, isSmallScreen, context);
+                                      }).toList(),
+                                    ),
+                                    SpacingConstants()
                                         .heightBetweenFieldsLarge(context),
                                     const AutoSizeText(
                                       'Teams',
@@ -159,6 +219,9 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  isSmallScreen
+                      ? footerSmall(state.footerInfo!, context)
+                      : footerLarge(state.footerInfo!, context),
                 ],
               ));
             }
@@ -170,7 +233,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Card bookingClassCard(TrailBookClass bookingClass, List<String>? levels,
+  Widget bookingClassCard(TrailBookClass bookingClass, List<String>? levels,
       bool isSmallScreen, BuildContext context, bool isTrial) {
     String? levelData;
     List<String> listLevels = [];
@@ -187,78 +250,94 @@ class HomePage extends StatelessWidget {
     } else {
       levelData = '';
     }
-    return Card(
-      elevation: 7.0,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.02,
-          vertical: MediaQuery.of(context).size.height * 0.02,
-        ),
-        width: isSmallScreen
-            ? MediaQuery.of(context).size.width * 0.8
-            : MediaQuery.of(context).size.width * 0.27,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  width: isSmallScreen
-                      ? MediaQuery.of(context).size.width * 0.3
-                      : MediaQuery.of(context).size.width * 0.05,
-                  height: MediaQuery.of(context).size.height * 0.08,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/classes_default.png'),
-                        fit: BoxFit.contain),
+    return InkWell(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return classDialog(
+                  bookingClass, listLevels, isTrial, isSmallScreen, context);
+            });
+      },
+      child: Card(
+        elevation: 7.0,
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.02,
+            vertical: MediaQuery.of(context).size.height * 0.02,
+          ),
+          width: isSmallScreen
+              ? MediaQuery.of(context).size.width * 0.8
+              : MediaQuery.of(context).size.width * 0.27,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    width: isSmallScreen
+                        ? MediaQuery.of(context).size.width * 0.3
+                        : MediaQuery.of(context).size.width * 0.05,
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/classes_default.png'),
+                          fit: BoxFit.contain),
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AutoSizeText(
+                          bookingClass.title,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          //maxLines: 1,
+                          style: const TextStyle(fontSize: 18.0),
+                        ),
+                        AutoSizeText(
+                          ' ${bookingClass.sportName} $levelData',
+                          maxLines: 1,
+                          style: const TextStyle(fontSize: 13.0),
+                        ),
+                        AutoSizeText(
+                          bookingClass.location,
+                          maxLines: 1,
+                          style: const TextStyle(fontSize: 13.0),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              TextButton(
+                onPressed: () {
+                  if (bookingClass.level!.isNotEmpty) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return levelAlertDialog(listLevels, context);
+                        });
+                  }
+                },
+                child: AutoSizeText(
+                  isTrial ? 'Free Trial' : 'Book',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: TextStyle(
+                    color: bookingClass.level!.isNotEmpty
+                        ? Colors.grey
+                        : Colors.green,
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AutoSizeText(
-                      bookingClass.title,
-                      maxLines: 1,
-                      style: const TextStyle(fontSize: 18.0),
-                    ),
-                    AutoSizeText(
-                      ' ${bookingClass.sportName} $levelData',
-                      maxLines: 1,
-                      style: const TextStyle(fontSize: 13.0),
-                    ),
-                    AutoSizeText(
-                      bookingClass.location,
-                      maxLines: 1,
-                      style: const TextStyle(fontSize: 13.0),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            TextButton(
-              onPressed: () {
-                if (bookingClass.level!.isNotEmpty) {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return levelAlertDialog(listLevels, context);
-                      });
-                }
-              },
-              child: AutoSizeText(
-                isTrial ? 'Free Trial' : 'Book',
-                maxLines: 1,
-                style: TextStyle(
-                  color: bookingClass.level!.isNotEmpty
-                      ? Colors.grey
-                      : Colors.green,
-                ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -339,6 +418,115 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Dialog classDialog(TrailBookClass dialogClass, List<String> listLevels,
+      bool isTrial, bool isSmallScreen, BuildContext context) {
+    String levelsCommon = '${dialogClass.sportName} |';
+
+    for (int i = 0; i < listLevels.length; i++) {
+      levelsCommon =
+          '$levelsCommon ${listLevels[i]}${i + 1 < listLevels.length ? ", " : ""}';
+    }
+
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.03,
+            horizontal: MediaQuery.of(context).size.width * 0.03),
+        width: isSmallScreen
+            ? MediaQuery.of(context).size.width * 0.8
+            : MediaQuery.of(context).size.width * 0.25,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: isSmallScreen
+                    ? MediaQuery.of(context).size.width * 0.8
+                    : MediaQuery.of(context).size.width * 0.25,
+                height: MediaQuery.of(context).size.height * 0.3,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: const DecorationImage(
+                        image: AssetImage('assets/classes_default.png'),
+                        fit: BoxFit.fill)),
+              ),
+              SpacingConstants().heightBetweenFieldsSmall(context),
+              AutoSizeText(
+                dialogClass.title,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                style: const TextStyle(
+                    fontSize: 20.0, fontWeight: FontWeight.bold),
+              ),
+              AutoSizeText(
+                levelsCommon,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                style: const TextStyle(fontSize: 15.0),
+              ),
+              const Divider(
+                color: Colors.black,
+              ),
+              const AutoSizeText(
+                'Address',
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AutoSizeText(
+                    dialogClass.location,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                    style: const TextStyle(fontSize: 15.0),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        MapsLauncher.launchCoordinates(
+                            dialogClass.lat, dialogClass.lon);
+                      },
+                      icon: const Icon(Icons.location_pin)),
+                ],
+              ),
+              SpacingConstants().heightBetweenFieldsMed(context),
+              const AutoSizeText(
+                'Timings',
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+              ),
+              Center(
+                  child: TextButton(
+                onPressed: () {
+                  if (dialogClass.level!.isNotEmpty) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return levelAlertDialog(listLevels, context);
+                        });
+                  }
+                },
+                child: AutoSizeText(
+                  isTrial ? 'Free Trial' : 'Book',
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: dialogClass.level!.isNotEmpty
+                        ? Colors.grey
+                        : Colors.green,
+                  ),
+                ),
+              ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget smallTeamWidget(TeamMember member, BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.8,
@@ -388,10 +576,11 @@ class HomePage extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.03,
+          vertical: MediaQuery.of(context).size.height * 0.01,
         ),
         width: isSmallScreen
-            ? MediaQuery.of(context).size.width * 0.4
-            : MediaQuery.of(context).size.width * 0.2,
+            ? MediaQuery.of(context).size.width * 0.8
+            : MediaQuery.of(context).size.width * 0.27,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AutoSizeText(
             '${plan.duration} ${plan.durationUnit} $sessionsData',
@@ -419,8 +608,20 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              ElevatedButton(
-                  onPressed: () {}, child: const AutoSizeText('Book'))
+              SizedBox(
+                width: isSmallScreen
+                    ? MediaQuery.of(context).size.width * 0.2
+                    : MediaQuery.of(context).size.width * 0.07,
+                child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(padding: EdgeInsets.all(0)),
+                    child: const AutoSizeText(
+                      'Book',
+                      overflow: TextOverflow.clip,
+                      softWrap: false,
+                      style: TextStyle(fontSize: 10.0),
+                    )),
+              )
             ],
           )
         ]),
