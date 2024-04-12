@@ -31,7 +31,7 @@ class _PagesState extends State<Pages> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const AutoSizeText('Pages'),
+        title: const AutoSizeText('Plan Details'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,9 +85,9 @@ class _PagesState extends State<Pages> {
   Card planCard(Plan plan, bool isSmallScreen, BuildContext context) {
     String? sessionsData =
         plan.sessions! > 0 ? '| ${plan.sessions} sessions' : '';
-    double taxAmount = 0;
-    if (plan.sessions != null) {
-      taxAmount = plan.sessions! * 0.25;
+    int taxAmount = 0;
+    if (plan.fees != null) {
+      taxAmount = (plan.fees! * 0.25).ceil();
     }
     return Card(
       elevation: 0,

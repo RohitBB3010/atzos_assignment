@@ -6,11 +6,12 @@ import 'package:atzos_assignment/screens/classes_page/classes_page.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_cubit.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
-import 'package:atzos_assignment/screens/pages/pages.dart';
+import 'package:atzos_assignment/screens/plans/plans_page.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -32,24 +33,29 @@ class HomePage extends StatelessWidget {
         body: BlocBuilder<HomePageCubit, HomePageState>(
           builder: (context, state) {
             if (state is HomePageDataLoadingState) {
-              return const AutoSizeText('Loading');
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset('assets/loading.json'),
+                    const AutoSizeText(
+                      'Please wait while we load content for you !!!',
+                      maxLines: 2,
+                      style: TextStyle(fontSize: 20.0),
+                    )
+                  ],
+                ),
+              );
             }
 
             if (state is HomePageDataLoadedState) {
               List<TrailBookClass> limitedBookClasses =
                   List.from(state.bookingClasses!.take(3));
 
-              bool isExpanded = false;
-
               List<TrailBookClass> limitedTrailClass =
                   List.from(state.trailClasses!.take(3));
 
               List<Plan> limitedPlans = List.from(state.plans!.take(3));
-
-              List<TeamMember> teamsList = isExpanded
-                  // ignore: dead_code
-                  ? List.from(state.teamMembers!)
-                  : List<TeamMember>.from(state.teamMembers!).take(3).toList();
 
               double screenWidth = MediaQuery.of(context).size.width;
               bool isSmallScreen = screenWidth <= 900 ? true : false;
@@ -782,9 +788,9 @@ class HomePage extends StatelessWidget {
   Card planCard(Plan plan, bool isSmallScreen, BuildContext context) {
     String? sessionsData =
         plan.sessions! > 0 ? '| ${plan.sessions} sessions' : '';
-    double taxAmount = 0;
-    if (plan.sessions != null) {
-      taxAmount = plan.sessions! * 0.25;
+    int taxAmount = 0;
+    if (plan.fees != null) {
+      taxAmount = (plan.fees! * 0.25).ceil();
     }
     return Card(
       elevation: 7.0,
