@@ -11,6 +11,7 @@ class HomePageCubit extends Cubit<HomePageState> {
     emit(HomePageDataLoadingState());
     List<TrailBookClass> bookingClassesList = [];
     List<TeamMember> membersList = [];
+    List<Plan> plansList = [];
 
     Dio dio = Dio();
 
@@ -21,7 +22,9 @@ class HomePageCubit extends Cubit<HomePageState> {
     var levelList = response1.data['level_list'];
     var persons = response1.data['team'];
     var planListData = response1.data['plan_data'];
+    var infoData = response1.data['venue_basic_data'];
 
+    BasicData footerData = BasicData.fromJson(infoData);
     List<String> levels =
         levelList.values.map<String>((value) => value.toString()).toList();
 
@@ -36,9 +39,8 @@ class HomePageCubit extends Cubit<HomePageState> {
     }
 
     for (int i = 0; i < planListData.length; i++) {
-      print(i);
       Plan plan = Plan.fromJson(planListData[i]);
-      print(plan);
+      plansList.add(plan);
     }
 
     emit(HomePageDataLoadedState(
@@ -46,6 +48,8 @@ class HomePageCubit extends Cubit<HomePageState> {
       levels: levels,
       trailClasses: bookingClassesList,
       teamMembers: membersList,
+      plans: plansList,
+      footerInfo: footerData,
     ));
   }
 }

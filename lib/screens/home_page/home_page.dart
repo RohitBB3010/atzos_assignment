@@ -34,94 +34,130 @@ class HomePage extends StatelessWidget {
               double screenWidth = MediaQuery.of(context).size.width;
               bool isSmallScreen = screenWidth <= 700 ? true : false;
               return SingleChildScrollView(
-                  child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.05),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const AutoSizeText('Here advertisement will come'),
-                    SpacingConstants().heightBetweenFieldsMed(context),
-                    const AutoSizeText(
-                      'Classes',
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontSize: 30.0, fontWeight: FontWeight.bold),
-                    ),
-                    SpacingConstants().heightBetweenFieldsSmall(context),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Wrap(
-                            spacing: MediaQuery.of(context).size.width * 0.03,
-                            runSpacing:
-                                MediaQuery.of(context).size.height * 0.03,
-                            children: state.bookingClasses!.map((bookingClass) {
-                              return bookingClassCard(bookingClass,
-                                  state.levels, isSmallScreen, context, false);
-                            }).toList(),
-                          ),
-                          SpacingConstants().heightBetweenFieldsLarge(context),
-                          const AutoSizeText(
-                            'Trial Classes',
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: 30.0, fontWeight: FontWeight.bold),
-                          ),
-                          SpacingConstants().heightBetweenFieldsSmall(context),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Column(
-                              children: [
-                                Wrap(
-                                  spacing:
-                                      MediaQuery.of(context).size.width * 0.03,
-                                  runSpacing:
-                                      MediaQuery.of(context).size.height * 0.03,
-                                  children:
-                                      state.bookingClasses!.map((bookingClass) {
-                                    return bookingClassCard(
-                                        bookingClass,
-                                        state.levels,
-                                        isSmallScreen,
-                                        context,
-                                        true);
-                                  }).toList(),
+                  child: Column(
+                children: [
+                  footer(state.footerInfo!, context),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.05),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const AutoSizeText('Here advertisement will come'),
+                        SpacingConstants().heightBetweenFieldsMed(context),
+                        const AutoSizeText(
+                          'Plans',
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: 30.0, fontWeight: FontWeight.bold),
+                        ),
+                        SpacingConstants().heightBetweenFieldsSmall(context),
+                        Wrap(
+                          spacing: MediaQuery.of(context).size.width * 0.02,
+                          runSpacing: MediaQuery.of(context).size.height * 0.03,
+                          children: state.plans!.map((plan) {
+                            return planCard(plan, isSmallScreen, context);
+                          }).toList(),
+                        ),
+                        SpacingConstants().heightBetweenFieldsLarge(context),
+                        const AutoSizeText(
+                          'Classes',
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: 30.0, fontWeight: FontWeight.bold),
+                        ),
+                        SpacingConstants().heightBetweenFieldsSmall(context),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Wrap(
+                                spacing:
+                                    MediaQuery.of(context).size.width * 0.03,
+                                runSpacing:
+                                    MediaQuery.of(context).size.height * 0.03,
+                                children:
+                                    state.bookingClasses!.map((bookingClass) {
+                                  return bookingClassCard(
+                                      bookingClass,
+                                      state.levels,
+                                      isSmallScreen,
+                                      context,
+                                      false);
+                                }).toList(),
+                              ),
+                              SpacingConstants()
+                                  .heightBetweenFieldsLarge(context),
+                              const AutoSizeText(
+                                'Trial Classes',
+                                maxLines: 1,
+                                style: TextStyle(
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SpacingConstants()
+                                  .heightBetweenFieldsSmall(context),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Wrap(
+                                      spacing:
+                                          MediaQuery.of(context).size.width *
+                                              0.03,
+                                      runSpacing:
+                                          MediaQuery.of(context).size.height *
+                                              0.03,
+                                      children: state.bookingClasses!
+                                          .map((bookingClass) {
+                                        return bookingClassCard(
+                                            bookingClass,
+                                            state.levels,
+                                            isSmallScreen,
+                                            context,
+                                            true);
+                                      }).toList(),
+                                    ),
+                                    SpacingConstants()
+                                        .heightBetweenFieldsLarge(context),
+                                    const AutoSizeText(
+                                      'Teams',
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 30.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SpacingConstants()
+                                        .heightBetweenFieldsSmall(context),
+                                    if (state.teamMembers != null)
+                                      Wrap(
+                                        spacing:
+                                            MediaQuery.of(context).size.width *
+                                                0.1,
+                                        runSpacing:
+                                            MediaQuery.of(context).size.height *
+                                                0.03,
+                                        children:
+                                            state.teamMembers!.map((member) {
+                                          return isSmallScreen
+                                              ? smallTeamWidget(member, context)
+                                              : largeTeamWidget(
+                                                  member, context);
+                                        }).toList(),
+                                      )
+                                  ],
                                 ),
-                                SpacingConstants()
-                                    .heightBetweenFieldsLarge(context),
-                                const AutoSizeText(
-                                  'Plans',
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 30.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SpacingConstants()
-                                    .heightBetweenFieldsSmall(context),
-                                if (state.teamMembers != null)
-                                  Wrap(
-                                    spacing:
-                                        MediaQuery.of(context).size.width * 0.1,
-                                    runSpacing:
-                                        MediaQuery.of(context).size.height *
-                                            0.03,
-                                    children: state.teamMembers!.map((member) {
-                                      return isSmallScreen
-                                          ? smallTeamWidget(member, context)
-                                          : largeTeamWidget(member, context);
-                                    }).toList(),
-                                  )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SpacingConstants().heightBetweenFieldsLarge(context),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ));
             }
 
@@ -308,7 +344,7 @@ class HomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CircleAvatar(
-            radius: MediaQuery.of(context).size.width * 0.08,
+            radius: MediaQuery.of(context).size.width * 0.06,
             backgroundColor: Colors.amber,
             child: Icon(
               Icons.person,
@@ -333,6 +369,234 @@ class HomePage extends StatelessWidget {
                 )
             ],
           )
+        ],
+      ),
+    );
+  }
+
+  Card planCard(Plan plan, bool isSmallScreen, BuildContext context) {
+    String? sessionsData =
+        plan.sessions! > 0 ? '| ${plan.sessions} sessions' : '';
+    double taxAmount = 0;
+    if (plan.sessions != null) {
+      taxAmount = plan.sessions! * 0.25;
+    }
+    return Card(
+      elevation: 7.0,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.03,
+        ),
+        width: isSmallScreen
+            ? MediaQuery.of(context).size.width * 0.4
+            : MediaQuery.of(context).size.width * 0.2,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          AutoSizeText(
+            '${plan.duration} ${plan.durationUnit} $sessionsData',
+            maxLines: 1,
+            style: const TextStyle(fontSize: 18.0),
+          ),
+          AutoSizeText(
+            plan.name,
+            style: const TextStyle(fontSize: 13.0),
+          ),
+          SpacingConstants().heightBetweenFieldsSmall(context),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  AutoSizeText(
+                    'Rs.${plan.fees}',
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  AutoSizeText(
+                    ' + tax Rs.${taxAmount.toString()}',
+                    style: const TextStyle(fontSize: 13.0),
+                  ),
+                ],
+              ),
+              ElevatedButton(onPressed: () {}, child: AutoSizeText('Book'))
+            ],
+          )
+        ]),
+      ),
+    );
+  }
+
+  Widget footer(BasicData footerInfo, BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: const Color(0xff212121),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.05,
+                    vertical: MediaQuery.of(context).size.height * 00.02),
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const AutoSizeText(
+                      'Contact',
+                      maxLines: 1,
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
+                    ),
+                    SpacingConstants().heightBetweenFieldsMed(context),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.email,
+                          color: Colors.white,
+                        ),
+                        SpacingConstants().widthBetweenFieldsSmall(context),
+                        TextButton(
+                            onPressed: () {},
+                            child: AutoSizeText(
+                              footerInfo.email,
+                              style: const TextStyle(color: Colors.white),
+                            ))
+                      ],
+                    ),
+                    SpacingConstants().heightBetweenFieldsSmall(context),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.phone,
+                          color: Colors.white,
+                        ),
+                        SpacingConstants().widthBetweenFieldsSmall(context),
+                        TextButton(
+                            onPressed: () {},
+                            child: AutoSizeText(
+                              footerInfo.phoneNumber,
+                              style: const TextStyle(color: Colors.white),
+                            ))
+                      ],
+                    ),
+                    SpacingConstants().heightBetweenFieldsSmall(context),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.public,
+                          color: Colors.white,
+                        ),
+                        SpacingConstants().widthBetweenFieldsSmall(context),
+                        TextButton(
+                            onPressed: () {},
+                            child: AutoSizeText(
+                              footerInfo.website,
+                              style: const TextStyle(color: Colors.white),
+                            ))
+                      ],
+                    ),
+                    SpacingConstants().heightBetweenFieldsSmall(context),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_pin,
+                          color: Colors.white,
+                        ),
+                        SpacingConstants().widthBetweenFieldsSmall(context),
+                        TextButton(
+                            onPressed: () {},
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: AutoSizeText(
+                                footerInfo.address,
+                                softWrap: true,
+                                maxLines: 2,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ))
+                      ],
+                    ),
+                    SpacingConstants().heightBetweenFieldsSmall(context),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.05,
+                    vertical: MediaQuery.of(context).size.height * 00.02),
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const AutoSizeText(
+                      'Have questions ?',
+                      maxLines: 1,
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
+                    ),
+                    const AutoSizeText(
+                      'Drop us a line.',
+                      maxLines: 1,
+                      style: TextStyle(color: Colors.white, fontSize: 15.0),
+                    ),
+                    SpacingConstants().heightBetweenFieldsSmall(context),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                            side: const BorderSide(
+                                color: Colors.white, width: 2.0)),
+                        child: const AutoSizeText(
+                          'Login',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    const AutoSizeText(
+                      'Follow Us',
+                      maxLines: 1,
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.facebook,
+                              color: Colors.white,
+                            )),
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.camera,
+                              color: Colors.white,
+                            )),
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.book,
+                              color: Colors.white,
+                            )),
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.flight,
+                              color: Colors.white,
+                            )),
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.youtube_searched_for,
+                              color: Colors.white,
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );

@@ -227,19 +227,107 @@ class TeamMember {
 class Plan {
   int? duration;
   int? sessions;
-  String? name;
+  String name;
   String? durationUnit;
   double? fees;
 
-  Plan({this.duration, this.sessions, this.name, this.durationUnit, this.fees});
+  Plan(
+      {this.duration,
+      this.sessions,
+      required this.name,
+      this.durationUnit,
+      this.fees});
 
   factory Plan.fromJson(Map<String, dynamic> json) {
     return Plan(
       duration: int.parse(json['duration']),
       sessions: int.parse(json['sessions']),
-      name: json['name'] as String?,
+      name: json['name'] as String,
       durationUnit: json['duration_unit'] as String?,
       fees: double.parse(json['fees']),
     );
+  }
+}
+
+class BasicData {
+  String phoneNumber;
+  String email;
+  String website;
+  String address;
+  Map<String, String> socialMediaLinks;
+  List<AdditionalInfo> additionalInfo;
+  String terms;
+  String privacyPolicy;
+  String countryCode;
+
+  BasicData(
+      {required this.phoneNumber,
+      required this.email,
+      required this.additionalInfo,
+      required this.address,
+      required this.website,
+      required this.socialMediaLinks,
+      required this.terms,
+      required this.privacyPolicy,
+      required this.countryCode});
+
+  factory BasicData.fromJson(Map<String, dynamic> json) {
+    return BasicData(
+      website: json['website'],
+      phoneNumber: json['phone'],
+      email: json['email'],
+      countryCode: json['country_code'],
+      address: json['address'],
+      privacyPolicy: json['privacy_policy'],
+      terms: json['terms'],
+      additionalInfo: jsonToInfoList(json['additional_info']),
+      socialMediaLinks: jsonStringToMap(json['social_link']),
+    );
+  }
+
+  static Map<String, String> jsonStringToMap(String jsonString) {
+    Map<String, String> resultMap = {};
+    Map<String, dynamic> jsonMap = json.decode(jsonString);
+    jsonMap.forEach((key, value) {
+      resultMap[key] = value.toString();
+    });
+
+    return resultMap;
+  }
+
+  static List<AdditionalInfo> jsonToInfoList(String? jsonData) {
+    if (jsonData == null) return [];
+
+    List<dynamic> jsonDecodedData = jsonDecode(jsonData);
+    if (jsonDecodedData == null) return [];
+
+    List<AdditionalInfo> infoList = [];
+
+    for (var jsonInfo in jsonDecodedData) {
+      if (jsonInfo != null) {
+        AdditionalInfo info = AdditionalInfo.fromJson(jsonInfo);
+        infoList.add(info);
+      }
+    }
+
+    return infoList;
+  }
+}
+
+class AdditionalInfo {
+  String title;
+  String descpription;
+  String visibleTo;
+
+  AdditionalInfo(
+      {required this.title,
+      required this.visibleTo,
+      required this.descpription});
+
+  factory AdditionalInfo.fromJson(Map<String, dynamic> json) {
+    return AdditionalInfo(
+        title: json['title'],
+        visibleTo: json['visible_to'],
+        descpription: json['description']);
   }
 }

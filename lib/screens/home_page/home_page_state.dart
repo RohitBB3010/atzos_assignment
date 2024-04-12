@@ -11,11 +11,15 @@ class HomePageDataLoadedState extends HomePageState {
   List<TrailBookClass>? trailClasses;
   List<String>? levels;
   List<TeamMember>? teamMembers;
+  List<Plan>? plans;
+  BasicData? footerInfo;
 
   HomePageDataLoadedState({
     this.bookingClasses,
     this.trailClasses,
     this.levels,
     this.teamMembers,
+    this.plans,
+    this.footerInfo,
   });
 }
