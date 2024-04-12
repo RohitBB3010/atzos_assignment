@@ -1,9 +1,11 @@
 import 'dart:js';
 
+import 'package:atzos_assignment/constants/spacing_constants.dart';
 import 'package:atzos_assignment/screens/home_page/home_page.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ClassesPage extends StatefulWidget {
   final List<TrailBookClass> displayClasses;
@@ -33,7 +35,8 @@ class _ClassesPageState extends State<ClassesPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: MediaQuery.of(context).size.height * 0.01,
+          toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+          title: const AutoSizeText('Classes'),
           bottom: TabBar(
             tabs: [
               SizedBox(
@@ -50,6 +53,7 @@ class _ClassesPageState extends State<ClassesPage> {
             height: MediaQuery.of(context).size.height * 0.85,
             child: Column(
               children: [
+                SpacingConstants().heightBetweenFieldsSmall(context),
                 customSearchBar(context, searchController, formkey),
                 Expanded(
                   flex: 1,
@@ -63,7 +67,24 @@ class _ClassesPageState extends State<ClassesPage> {
               ],
             ),
           ),
-          AutoSizeText('Rohit')
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.85,
+            child: Column(
+              children: [
+                SpacingConstants().heightBetweenFieldsSmall(context),
+                customSearchBar(context, searchController, formkey),
+                Expanded(
+                  flex: 1,
+                  child: ListView.builder(
+                      itemCount: searchClasses.length,
+                      itemBuilder: (context, i) {
+                        return classCard(
+                            searchClasses[i], widget.levels, context, false);
+                      }),
+                ),
+              ],
+            ),
+          ),
         ]),
       ),
     );
@@ -73,15 +94,27 @@ class _ClassesPageState extends State<ClassesPage> {
       TextEditingController searchController, GlobalKey<FormState> key) {
     return Form(
       key: key,
-      child: TextFormField(
-        controller: searchController,
-        onChanged: (String? value) {
-          setState(() {
-            searchClasses = widget.displayClasses.where((element) {
-              return element.title.contains(value!.toLowerCase() ?? '');
-            }).toList();
-          });
-        },
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: MediaQuery.of(context).size.height * 0.08,
+        child: TextFormField(
+          controller: searchController,
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.02),
+              hintText: 'Search',
+              prefixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black.withOpacity(0.8)),
+                  borderRadius: BorderRadius.circular(15.0))),
+          onChanged: (String? value) {
+            setState(() {
+              searchClasses = widget.displayClasses.where((element) {
+                return element.title.contains(value!.toLowerCase());
+              }).toList();
+            });
+          },
+        ),
       ),
     );
   }
