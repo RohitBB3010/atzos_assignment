@@ -1001,7 +1001,7 @@ class HomePage extends StatelessWidget {
                             side: const BorderSide(
                                 color: Colors.white, width: 2.0)),
                         child: const AutoSizeText(
-                          'Login',
+                          'Enquire',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -1241,7 +1241,7 @@ class HomePage extends StatelessWidget {
               style: TextButton.styleFrom(
                   side: const BorderSide(color: Colors.white, width: 2.0)),
               child: const AutoSizeText(
-                'Login',
+                'Enquire',
                 style: TextStyle(color: Colors.white),
               ),
             ),

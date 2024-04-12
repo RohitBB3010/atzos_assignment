@@ -55,3 +55,24 @@ class HomePageCubit extends Cubit<HomePageState> {
     ));
   }
 }
+
+class Enquiry {
+  String name;
+  String gender;
+  String skill;
+  String? center;
+
+  Enquiry({
+    required this.name,
+    required this.gender,
+    required this.skill,
+    this.center,
+  });
+
+  Map<String, dynamic> enquiryToJson(Enquiry enquiry) => <String, dynamic>{
+        'name': enquiry.name,
+        'gender': enquiry.gender,
+        'skill': enquiry.skill,
+        'center': enquiry.center
+      };
+}
