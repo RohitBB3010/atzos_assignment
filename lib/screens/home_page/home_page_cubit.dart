@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
@@ -12,6 +13,7 @@ class HomePageCubit extends Cubit<HomePageState> {
     List<TrailBookClass> bookingClassesList = [];
     List<TeamMember> membersList = [];
     List<Plan> plansList = [];
+    bool isExpanded = false;
 
     Dio dio = Dio();
 

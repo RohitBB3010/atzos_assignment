@@ -1,5 +1,6 @@
 import 'package:atzos_assignment/components/custom_appbar.dart';
 import 'package:atzos_assignment/components/custom_bottom_nav.dart';
+import 'package:atzos_assignment/components/teams_list.dart';
 import 'package:atzos_assignment/constants/spacing_constants.dart';
 import 'package:atzos_assignment/screens/classes_page/classes_page.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
@@ -38,10 +39,17 @@ class HomePage extends StatelessWidget {
               List<TrailBookClass> limitedBookClasses =
                   List.from(state.bookingClasses!.take(3));
 
+              bool isExpanded = false;
+
               List<TrailBookClass> limitedTrailClass =
                   List.from(state.trailClasses!.take(3));
 
               List<Plan> limitedPlans = List.from(state.plans!.take(3));
+
+              List<TeamMember> teamsList = isExpanded
+                  // ignore: dead_code
+                  ? List.from(state.teamMembers!)
+                  : List<TeamMember>.from(state.teamMembers!).take(3).toList();
 
               double screenWidth = MediaQuery.of(context).size.width;
               bool isSmallScreen = screenWidth <= 900 ? true : false;
@@ -372,31 +380,9 @@ class HomePage extends StatelessWidget {
                                     ),
                                     SpacingConstants()
                                         .heightBetweenFieldsLarge(context),
-                                    const AutoSizeText(
-                                      'Teams',
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontSize: 30.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SpacingConstants()
-                                        .heightBetweenFieldsSmall(context),
-                                    if (state.teamMembers != null)
-                                      Wrap(
-                                        spacing:
-                                            MediaQuery.of(context).size.width *
-                                                0.1,
-                                        runSpacing:
-                                            MediaQuery.of(context).size.height *
-                                                0.03,
-                                        children:
-                                            state.teamMembers!.map((member) {
-                                          return isSmallScreen
-                                              ? smallTeamWidget(member, context)
-                                              : largeTeamWidget(
-                                                  member, context);
-                                        }).toList(),
-                                      )
+                                    TeamsList(
+                                        teamList: state.teamMembers!,
+                                        isSmallScreen: isSmallScreen)
                                   ],
                                 ),
                               )
