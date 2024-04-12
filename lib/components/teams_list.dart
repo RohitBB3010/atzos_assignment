@@ -3,6 +3,7 @@ import 'package:atzos_assignment/screens/home_page/home_page.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class TeamsList extends StatefulWidget {
   final List<TeamMember> teamList;
@@ -20,26 +21,14 @@ class _TeamsListState extends State<TeamsList> {
   @override
   Widget build(BuildContext context) {
     List<TeamMember> displayTeam =
-        isExpanded ? widget.teamList! : widget.teamList.take(3).toList();
+        isExpanded ? widget.teamList : widget.teamList.take(3).toList();
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const AutoSizeText(
-              'Teams',
-              maxLines: 1,
-              style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    isExpanded = !isExpanded;
-                  });
-                },
-                child: const AutoSizeText('See More'))
-          ],
+        const AutoSizeText(
+          'Teams',
+          maxLines: 1,
+          style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
         ),
         SpacingConstants().heightBetweenFieldsSmall(context),
         if (widget.teamList.isNotEmpty)
@@ -51,7 +40,25 @@ class _TeamsListState extends State<TeamsList> {
                   ? const HomePage().smallTeamWidget(member, context)
                   : const HomePage().largeTeamWidget(member, context);
             }).toList(),
-          )
+          ),
+        SpacingConstants().heightBetweenFieldsSmall(context),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.3,
+          child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  isExpanded = !isExpanded;
+                });
+              },
+              child: Row(
+                children: [
+                  AutoSizeText(isExpanded ? 'See Less' : 'See More'),
+                  Icon(isExpanded
+                      ? Icons.arrow_circle_up_outlined
+                      : Icons.arrow_circle_down_outlined)
+                ],
+              )),
+        ),
       ],
     );
   }
