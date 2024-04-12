@@ -6,7 +6,7 @@ import 'package:atzos_assignment/screens/home_page/home_page_cubit.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
@@ -36,7 +36,9 @@ class HomePage extends StatelessWidget {
               return SingleChildScrollView(
                   child: Column(
                 children: [
-                  footer(state.footerInfo!, context),
+                  isSmallScreen
+                      ? footerSmall(state.footerInfo!, context)
+                      : footerLarge(state.footerInfo!, context),
                   Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: MediaQuery.of(context).size.width * 0.05),
@@ -417,7 +419,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              ElevatedButton(onPressed: () {}, child: AutoSizeText('Book'))
+              ElevatedButton(
+                  onPressed: () {}, child: const AutoSizeText('Book'))
             ],
           )
         ]),
@@ -425,7 +428,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget footer(BasicData footerInfo, BuildContext context) {
+  Widget footerLarge(BasicData footerInfo, BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       color: const Color(0xff212121),
@@ -523,7 +526,7 @@ class HomePage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: MediaQuery.of(context).size.width * 0.05,
-                    vertical: MediaQuery.of(context).size.height * 00.02),
+                    vertical: MediaQuery.of(context).size.height * 0.02),
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -553,6 +556,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SpacingConstants().heightBetweenFieldsMed(context),
                     const AutoSizeText(
                       'Follow Us',
                       maxLines: 1,
@@ -560,34 +564,49 @@ class HomePage extends StatelessWidget {
                     ),
                     Row(
                       children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.01,
+                        ),
                         IconButton(
                             onPressed: () {},
                             icon: const Icon(
-                              Icons.facebook,
+                              FontAwesomeIcons.facebook,
                               color: Colors.white,
                             )),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.01,
+                        ),
                         IconButton(
                             onPressed: () {},
                             icon: const Icon(
-                              Icons.camera,
+                              FontAwesomeIcons.instagram,
                               color: Colors.white,
                             )),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.01,
+                        ),
                         IconButton(
                             onPressed: () {},
                             icon: const Icon(
-                              Icons.book,
+                              FontAwesomeIcons.linkedin,
                               color: Colors.white,
                             )),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.01,
+                        ),
                         IconButton(
                             onPressed: () {},
                             icon: const Icon(
-                              Icons.flight,
+                              FontAwesomeIcons.twitter,
                               color: Colors.white,
                             )),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.01,
+                        ),
                         IconButton(
                             onPressed: () {},
                             icon: const Icon(
-                              Icons.youtube_searched_for,
+                              FontAwesomeIcons.youtube,
                               color: Colors.white,
                             ))
                       ],
@@ -597,6 +616,221 @@ class HomePage extends StatelessWidget {
               )
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  onPressed: () {},
+                  child: const AutoSizeText(
+                    'Privacy Policy',
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
+                  )),
+              const AutoSizeText(
+                '|',
+                style: TextStyle(fontSize: 30.0, color: Colors.white),
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: const AutoSizeText(
+                    'Terms Of Service',
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
+                  ))
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget footerSmall(BasicData footerInfo, BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: const Color(0xff212121),
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.05,
+          vertical: MediaQuery.of(context).size.height * 0.02),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const AutoSizeText(
+            'Contact',
+            style: TextStyle(color: Colors.white, fontSize: 20.0),
+          ),
+          SpacingConstants().heightBetweenFieldsMed(context),
+          Row(
+            children: [
+              const Icon(
+                Icons.email,
+                color: Colors.white,
+              ),
+              SpacingConstants().widthBetweenFieldsSmall(context),
+              TextButton(
+                  onPressed: () {},
+                  child: AutoSizeText(
+                    footerInfo.email,
+                    style: const TextStyle(color: Colors.white),
+                  ))
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.01,
+          ),
+          Row(
+            children: [
+              const Icon(
+                Icons.phone,
+                color: Colors.white,
+              ),
+              SpacingConstants().widthBetweenFieldsSmall(context),
+              TextButton(
+                  onPressed: () {},
+                  child: AutoSizeText(
+                    footerInfo.phoneNumber,
+                    style: const TextStyle(color: Colors.white),
+                  ))
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.01,
+          ),
+          Row(
+            children: [
+              const Icon(
+                Icons.public,
+                color: Colors.white,
+              ),
+              SpacingConstants().widthBetweenFieldsSmall(context),
+              TextButton(
+                  onPressed: () {},
+                  child: AutoSizeText(
+                    footerInfo.website,
+                    style: const TextStyle(color: Colors.white),
+                  ))
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.01,
+          ),
+          Row(
+            children: [
+              const Icon(
+                Icons.location_pin,
+                color: Colors.white,
+              ),
+              SpacingConstants().widthBetweenFieldsSmall(context),
+              TextButton(
+                  onPressed: () {},
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: AutoSizeText(
+                      footerInfo.address,
+                      softWrap: true,
+                      maxLines: 2,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ))
+            ],
+          ),
+          SpacingConstants().heightBetweenFieldsMed(context),
+          const AutoSizeText(
+            'Have questions ?',
+            maxLines: 1,
+            style: TextStyle(color: Colors.white, fontSize: 20.0),
+          ),
+          const AutoSizeText(
+            'Drop us a line.',
+            maxLines: 1,
+            style: TextStyle(color: Colors.white, fontSize: 15.0),
+          ),
+          SpacingConstants().heightBetweenFieldsSmall(context),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.85,
+            child: TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(
+                  side: const BorderSide(color: Colors.white, width: 2.0)),
+              child: const AutoSizeText(
+                'Login',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+          SpacingConstants().heightBetweenFieldsMed(context),
+          const AutoSizeText(
+            'Follow Us',
+            maxLines: 1,
+            style: TextStyle(color: Colors.white, fontSize: 20.0),
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.01,
+              ),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    FontAwesomeIcons.facebook,
+                    color: Colors.white,
+                  )),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.01,
+              ),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    FontAwesomeIcons.instagram,
+                    color: Colors.white,
+                  )),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.01,
+              ),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    FontAwesomeIcons.linkedin,
+                    color: Colors.white,
+                  )),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.01,
+              ),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    FontAwesomeIcons.twitter,
+                    color: Colors.white,
+                  )),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.01,
+              ),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    FontAwesomeIcons.youtube,
+                    color: Colors.white,
+                  ))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  onPressed: () {},
+                  child: const AutoSizeText(
+                    'Privacy Policy',
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
+                  )),
+              const AutoSizeText(
+                '|',
+                style: TextStyle(fontSize: 30.0, color: Colors.white),
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: const AutoSizeText(
+                    'Terms Of Service',
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
+                  ))
+            ],
+          )
         ],
       ),
     );
