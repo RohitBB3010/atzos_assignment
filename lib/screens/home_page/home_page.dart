@@ -1,6 +1,7 @@
 import 'package:atzos_assignment/components/custom_appbar.dart';
 import 'package:atzos_assignment/components/custom_bottom_nav.dart';
 import 'package:atzos_assignment/constants/spacing_constants.dart';
+import 'package:atzos_assignment/screens/classes_page/classes_page.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_cubit.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
@@ -47,7 +48,17 @@ class HomePage extends StatelessWidget {
                       children: [
                         //const AutoSizeText('Here advertisement will come'),
                         SpacingConstants().heightBetweenFieldsSmall(context),
-
+                        ElevatedButton(
+                            onPressed: () {
+                              print(state.bookingClasses);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ClassesPage(
+                                          displayClasses: state.bookingClasses!,
+                                          levels: state.levels!)));
+                            },
+                            child: AutoSizeText('Take')),
                         Row(
                           children: [
                             if (!isSmallScreen)
