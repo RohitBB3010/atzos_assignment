@@ -25,6 +25,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   maps_launcher: ^2.2.1
   html: ^0.15.4
+  url_launcher: ^6.2.6
 
 dev_dependencies:
   flutter_test:

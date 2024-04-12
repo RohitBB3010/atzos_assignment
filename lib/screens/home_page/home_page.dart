@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -46,11 +47,13 @@ class HomePage extends StatelessWidget {
                       children: [
                         //const AutoSizeText('Here advertisement will come'),
                         SpacingConstants().heightBetweenFieldsSmall(context),
+
                         Row(
                           children: [
                             if (!isSmallScreen)
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.5,
+                                width: MediaQuery.of(context).size.width * 0.45,
+                                margin: const EdgeInsets.all(10),
                                 height:
                                     MediaQuery.of(context).size.height * 0.3,
                                 decoration: BoxDecoration(
@@ -60,7 +63,35 @@ class HomePage extends StatelessWidget {
                                         image: AssetImage(
                                             'assets/spyn_advert.jpeg'),
                                         fit: BoxFit.fill)),
-                              )
+                              ),
+                            if (!isSmallScreen)
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    AutoSizeText(
+                                      state.footerInfo!.title,
+                                      style: const TextStyle(
+                                          fontSize: 25.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    AutoSizeText(
+                                      state.footerInfo!.htmlData!.description
+                                          .toString(),
+                                      style: const TextStyle(fontSize: 15.0),
+                                    ),
+                                    const AutoSizeText(
+                                      'Test :',
+                                      style: TextStyle(fontSize: 15.0),
+                                    ),
+                                    const AutoSizeText(
+                                      'External String :',
+                                      style: TextStyle(fontSize: 15.0),
+                                    )
+                                  ],
+                                ),
+                              ),
                           ],
                         ),
                         if (isSmallScreen)
@@ -76,29 +107,32 @@ class HomePage extends StatelessWidget {
                                     fit: BoxFit.fill)),
                           ),
                         SpacingConstants().heightBetweenFieldsSmall(context),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AutoSizeText(
-                              state.footerInfo!.title,
-                              style: const TextStyle(
-                                  fontSize: 25.0, fontWeight: FontWeight.bold),
-                            ),
-                            AutoSizeText(
-                              state.footerInfo!.htmlData!.description
-                                  .toString(),
-                              style: const TextStyle(fontSize: 15.0),
-                            ),
-                            const AutoSizeText(
-                              'Test :',
-                              style: TextStyle(fontSize: 15.0),
-                            ),
-                            const AutoSizeText(
-                              'External String :',
-                              style: TextStyle(fontSize: 15.0),
-                            )
-                          ],
-                        ),
+                        if (isSmallScreen)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AutoSizeText(
+                                state.footerInfo!.title,
+                                style: const TextStyle(
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              AutoSizeText(
+                                state.footerInfo!.htmlData!.description
+                                    .toString(),
+                                style: const TextStyle(fontSize: 15.0),
+                              ),
+                              const AutoSizeText(
+                                'Test :',
+                                style: TextStyle(fontSize: 15.0),
+                              ),
+                              const AutoSizeText(
+                                'External String :',
+                                style: TextStyle(fontSize: 15.0),
+                              )
+                            ],
+                          ),
+                        SpacingConstants().heightBetweenFieldsMed(context),
                         const AutoSizeText(
                           'Classes',
                           maxLines: 1,
@@ -127,7 +161,7 @@ class HomePage extends StatelessWidget {
                                 }).toList(),
                               ),
                               SpacingConstants()
-                                  .heightBetweenFieldsLarge(context),
+                                  .heightBetweenFieldsMed(context),
                               const AutoSizeText(
                                 'Trial Classes',
                                 maxLines: 1,
@@ -158,6 +192,42 @@ class HomePage extends StatelessWidget {
                                             context,
                                             true);
                                       }).toList(),
+                                    ),
+                                    SpacingConstants()
+                                        .heightBetweenFieldsMed(context),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        AutoSizeText(
+                                          state.footerInfo!.additionalInfo[0]
+                                              .title,
+                                          style: const TextStyle(
+                                              fontSize: 25.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        AutoSizeText(
+                                          state.footerInfo!.additionalInfo[0]
+                                              .descpription,
+                                          style:
+                                              const TextStyle(fontSize: 15.0),
+                                        ),
+                                        SpacingConstants()
+                                            .heightBetweenFieldsSmall(context),
+                                        AutoSizeText(
+                                          state.footerInfo!.additionalInfo[1]
+                                              .title,
+                                          style: const TextStyle(
+                                              fontSize: 25.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        AutoSizeText(
+                                          state.footerInfo!.additionalInfo[1]
+                                              .descpription,
+                                          style:
+                                              const TextStyle(fontSize: 15.0),
+                                        )
+                                      ],
                                     ),
                                     SpacingConstants()
                                         .heightBetweenFieldsMed(context),
@@ -220,8 +290,10 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   isSmallScreen
-                      ? footerSmall(state.footerInfo!, context)
-                      : footerLarge(state.footerInfo!, context),
+                      ? footerSmall(state.footerInfo!, context,
+                          state.footerInfo!.lat!, state.footerInfo!.lon!)
+                      : footerLarge(state.footerInfo!, context,
+                          state.footerInfo!.lat!, state.footerInfo!.lon!),
                 ],
               ));
             }
@@ -629,7 +701,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget footerLarge(BasicData footerInfo, BuildContext context) {
+  Widget footerLarge(
+      BasicData footerInfo, BuildContext context, double lat, double lon) {
     return Container(
       width: MediaQuery.of(context).size.width,
       color: const Color(0xff212121),
@@ -657,66 +730,93 @@ class HomePage extends StatelessWidget {
                         const Icon(
                           Icons.email,
                           color: Colors.white,
+                          size: 18.0,
                         ),
                         SpacingConstants().widthBetweenFieldsSmall(context),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final Uri url =
+                                  Uri.parse("mailTo:${footerInfo.email}");
+                              await launchUrl(url);
+                            },
                             child: AutoSizeText(
                               footerInfo.email,
-                              style: const TextStyle(color: Colors.white),
+                              maxLines: 1,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 13.0),
                             ))
                       ],
                     ),
-                    SpacingConstants().heightBetweenFieldsSmall(context),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
                     Row(
                       children: [
                         const Icon(
                           Icons.phone,
                           color: Colors.white,
+                          size: 18.0,
                         ),
                         SpacingConstants().widthBetweenFieldsSmall(context),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final Uri url = Uri.parse(
+                                  "tel:${footerInfo.countryCode}${footerInfo.phoneNumber}");
+                              await launchUrl(url);
+                            },
                             child: AutoSizeText(
                               footerInfo.phoneNumber,
-                              style: const TextStyle(color: Colors.white),
+                              maxLines: 1,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 13.0),
                             ))
                       ],
                     ),
-                    SpacingConstants().heightBetweenFieldsSmall(context),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
                     Row(
                       children: [
                         const Icon(
                           Icons.public,
                           color: Colors.white,
+                          size: 18.0,
                         ),
                         SpacingConstants().widthBetweenFieldsSmall(context),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final Uri url = Uri.parse(footerInfo.website);
+                              await launchUrl(url);
+                            },
                             child: AutoSizeText(
                               footerInfo.website,
-                              style: const TextStyle(color: Colors.white),
+                              maxLines: 1,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 13.0),
                             ))
                       ],
                     ),
-                    SpacingConstants().heightBetweenFieldsSmall(context),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
                     Row(
                       children: [
                         const Icon(
                           Icons.location_pin,
                           color: Colors.white,
+                          size: 18.0,
                         ),
                         SpacingConstants().widthBetweenFieldsSmall(context),
                         TextButton(
-                            onPressed: () {},
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.3,
-                              child: AutoSizeText(
-                                footerInfo.address,
-                                softWrap: true,
-                                maxLines: 2,
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                            onPressed: () {
+                              MapsLauncher.launchCoordinates(lat, lon);
+                            },
+                            child: AutoSizeText(
+                              footerInfo.address,
+                              softWrap: true,
+                              maxLines: 2,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 13.0),
                             ))
                       ],
                     ),
@@ -769,7 +869,11 @@ class HomePage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.01,
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final Uri url =
+                                  Uri.parse(footerInfo.socialMediaLinks['fb']!);
+                              await launchUrl(url);
+                            },
                             icon: const Icon(
                               FontAwesomeIcons.facebook,
                               color: Colors.white,
@@ -778,7 +882,11 @@ class HomePage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.01,
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final Uri url = Uri.parse(
+                                  footerInfo.socialMediaLinks['insta']!);
+                              await launchUrl(url);
+                            },
                             icon: const Icon(
                               FontAwesomeIcons.instagram,
                               color: Colors.white,
@@ -787,7 +895,11 @@ class HomePage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.01,
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final Uri url = Uri.parse(
+                                  footerInfo.socialMediaLinks['linkedin']!);
+                              await launchUrl(url);
+                            },
                             icon: const Icon(
                               FontAwesomeIcons.linkedin,
                               color: Colors.white,
@@ -796,7 +908,11 @@ class HomePage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.01,
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final Uri url = Uri.parse(
+                                  footerInfo.socialMediaLinks['twitter']!);
+                              await launchUrl(url);
+                            },
                             icon: const Icon(
                               FontAwesomeIcons.twitter,
                               color: Colors.white,
@@ -805,7 +921,11 @@ class HomePage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.01,
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final Uri url = Uri.parse(
+                                  footerInfo.socialMediaLinks['youtube']!);
+                              await launchUrl(url);
+                            },
                             icon: const Icon(
                               FontAwesomeIcons.youtube,
                               color: Colors.white,
@@ -843,7 +963,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget footerSmall(BasicData footerInfo, BuildContext context) {
+  Widget footerSmall(
+      BasicData footerInfo, BuildContext context, double lat, double lon) {
     return Container(
       width: MediaQuery.of(context).size.width,
       color: const Color(0xff212121),
@@ -863,13 +984,18 @@ class HomePage extends StatelessWidget {
               const Icon(
                 Icons.email,
                 color: Colors.white,
+                size: 18.0,
               ),
               SpacingConstants().widthBetweenFieldsSmall(context),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final Uri url = Uri.parse("mailTo:${footerInfo.email}");
+                    await launchUrl(url);
+                  },
                   child: AutoSizeText(
                     footerInfo.email,
-                    style: const TextStyle(color: Colors.white),
+                    maxLines: 1,
+                    style: const TextStyle(color: Colors.white, fontSize: 13.0),
                   ))
             ],
           ),
@@ -881,13 +1007,19 @@ class HomePage extends StatelessWidget {
               const Icon(
                 Icons.phone,
                 color: Colors.white,
+                size: 18.0,
               ),
               SpacingConstants().widthBetweenFieldsSmall(context),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final Uri url = Uri.parse(
+                        "tel:${footerInfo.countryCode}${footerInfo.phoneNumber}");
+                    await launchUrl(url);
+                  },
                   child: AutoSizeText(
                     footerInfo.phoneNumber,
-                    style: const TextStyle(color: Colors.white),
+                    maxLines: 1,
+                    style: const TextStyle(color: Colors.white, fontSize: 13.0),
                   ))
             ],
           ),
@@ -899,13 +1031,18 @@ class HomePage extends StatelessWidget {
               const Icon(
                 Icons.public,
                 color: Colors.white,
+                size: 18.0,
               ),
               SpacingConstants().widthBetweenFieldsSmall(context),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final Uri url = Uri.parse(footerInfo.website);
+                    await launchUrl(url);
+                  },
                   child: AutoSizeText(
                     footerInfo.website,
-                    style: const TextStyle(color: Colors.white),
+                    maxLines: 1,
+                    style: const TextStyle(color: Colors.white, fontSize: 13.0),
                   ))
             ],
           ),
@@ -917,17 +1054,21 @@ class HomePage extends StatelessWidget {
               const Icon(
                 Icons.location_pin,
                 color: Colors.white,
+                size: 18.0,
               ),
               SpacingConstants().widthBetweenFieldsSmall(context),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    MapsLauncher.launchCoordinates(lat, lon);
+                  },
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: AutoSizeText(
                       footerInfo.address,
                       softWrap: true,
                       maxLines: 2,
-                      style: const TextStyle(color: Colors.white),
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 13.0),
                     ),
                   ))
             ],
@@ -968,7 +1109,11 @@ class HomePage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.01,
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final Uri url =
+                        Uri.parse(footerInfo.socialMediaLinks['fb']!);
+                    await launchUrl(url);
+                  },
                   icon: const Icon(
                     FontAwesomeIcons.facebook,
                     color: Colors.white,
@@ -977,7 +1122,11 @@ class HomePage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.01,
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final Uri url =
+                        Uri.parse(footerInfo.socialMediaLinks['insta']!);
+                    await launchUrl(url);
+                  },
                   icon: const Icon(
                     FontAwesomeIcons.instagram,
                     color: Colors.white,
@@ -986,7 +1135,11 @@ class HomePage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.01,
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final Uri url =
+                        Uri.parse(footerInfo.socialMediaLinks['twitter']!);
+                    await launchUrl(url);
+                  },
                   icon: const Icon(
                     FontAwesomeIcons.linkedin,
                     color: Colors.white,
@@ -995,7 +1148,11 @@ class HomePage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.01,
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final Uri url =
+                        Uri.parse(footerInfo.socialMediaLinks['linkedin']!);
+                    await launchUrl(url);
+                  },
                   icon: const Icon(
                     FontAwesomeIcons.twitter,
                     color: Colors.white,
@@ -1004,7 +1161,11 @@ class HomePage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.01,
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final Uri url =
+                        Uri.parse(footerInfo.socialMediaLinks['youtube']!);
+                    await launchUrl(url);
+                  },
                   icon: const Icon(
                     FontAwesomeIcons.youtube,
                     color: Colors.white,

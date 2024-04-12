@@ -262,35 +262,39 @@ class BasicData {
   String privacyPolicy;
   String countryCode;
   HTMLData? htmlData;
+  double? lat;
+  double? lon;
 
-  BasicData({
-    required this.title,
-    required this.phoneNumber,
-    required this.email,
-    required this.additionalInfo,
-    required this.address,
-    required this.website,
-    required this.socialMediaLinks,
-    required this.terms,
-    required this.privacyPolicy,
-    required this.countryCode,
-    this.htmlData,
-  });
+  BasicData(
+      {required this.title,
+      required this.phoneNumber,
+      required this.email,
+      required this.additionalInfo,
+      required this.address,
+      required this.website,
+      required this.socialMediaLinks,
+      required this.terms,
+      required this.privacyPolicy,
+      required this.countryCode,
+      this.htmlData,
+      this.lat,
+      this.lon});
 
   factory BasicData.fromJson(Map<String, dynamic> json) {
     return BasicData(
-      title: json['title'],
-      website: json['website'],
-      phoneNumber: json['phone'],
-      email: json['email'],
-      countryCode: json['country_code'],
-      address: json['address'],
-      privacyPolicy: json['privacy_policy'],
-      terms: json['terms'],
-      htmlData: HTMLData.fromHTML(json['description']),
-      additionalInfo: jsonToInfoList(json['additional_info']),
-      socialMediaLinks: jsonStringToMap(json['social_link']),
-    );
+        title: json['title'],
+        website: json['website'],
+        phoneNumber: json['phone'],
+        email: json['email'],
+        countryCode: json['country_code'],
+        address: json['address'],
+        privacyPolicy: json['privacy_policy'],
+        terms: json['terms'],
+        htmlData: HTMLData.fromHTML(json['description']),
+        additionalInfo: jsonToInfoList(json['additional_info']),
+        socialMediaLinks: jsonStringToMap(json['social_link']),
+        lat: double.parse(json['lat']),
+        lon: double.parse(json['lon']));
   }
 
   static Map<String, String> jsonStringToMap(String jsonString) {
