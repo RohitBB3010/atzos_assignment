@@ -81,13 +81,45 @@ class HomePage extends StatelessWidget {
                                           .toString(),
                                       style: const TextStyle(fontSize: 15.0),
                                     ),
-                                    const AutoSizeText(
-                                      'Test :',
-                                      style: TextStyle(fontSize: 15.0),
+                                    Row(
+                                      children: [
+                                        const AutoSizeText(
+                                          'Test :',
+                                          style: TextStyle(fontSize: 15.0),
+                                        ),
+                                        TextButton(
+                                            onPressed: () {
+                                              final Uri url = Uri.parse(state
+                                                  .footerInfo!
+                                                  .htmlData!
+                                                  .externalLinkText);
+                                              launchUrl(url);
+                                            },
+                                            child: AutoSizeText(state
+                                                .footerInfo!
+                                                .htmlData!
+                                                .externalLinkText)),
+                                      ],
                                     ),
-                                    const AutoSizeText(
-                                      'External String :',
-                                      style: TextStyle(fontSize: 15.0),
+                                    Row(
+                                      children: [
+                                        const AutoSizeText(
+                                          'External String :',
+                                          style: TextStyle(fontSize: 15.0),
+                                        ),
+                                        TextButton(
+                                            onPressed: () {
+                                              final Uri url = Uri.parse(state
+                                                  .footerInfo!
+                                                  .htmlData!
+                                                  .externalLinkUrl);
+                                              launchUrl(url);
+                                            },
+                                            child: AutoSizeText(state
+                                                .footerInfo!
+                                                .htmlData!
+                                                .externalLinkUrl)),
+                                      ],
                                     )
                                   ],
                                 ),
@@ -122,13 +154,41 @@ class HomePage extends StatelessWidget {
                                     .toString(),
                                 style: const TextStyle(fontSize: 15.0),
                               ),
-                              const AutoSizeText(
-                                'Test :',
-                                style: TextStyle(fontSize: 15.0),
+                              Row(
+                                children: [
+                                  const AutoSizeText(
+                                    'Test :',
+                                    style: TextStyle(fontSize: 15.0),
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        final Uri url = Uri.parse(state
+                                            .footerInfo!
+                                            .htmlData!
+                                            .externalLinkText);
+                                        launchUrl(url);
+                                      },
+                                      child: AutoSizeText(state.footerInfo!
+                                          .htmlData!.externalLinkText)),
+                                ],
                               ),
-                              const AutoSizeText(
-                                'External String :',
-                                style: TextStyle(fontSize: 15.0),
+                              Row(
+                                children: [
+                                  const AutoSizeText(
+                                    'External String :',
+                                    style: TextStyle(fontSize: 15.0),
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        final Uri url = Uri.parse(state
+                                            .footerInfo!
+                                            .htmlData!
+                                            .externalLinkUrl);
+                                        launchUrl(url);
+                                      },
+                                      child: AutoSizeText(state.footerInfo!
+                                          .htmlData!.externalLinkUrl)),
+                                ],
                               )
                             ],
                           ),
