@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:atzos_assignment/components/custom_appbar.dart';
 import 'package:atzos_assignment/components/custom_bottom_nav.dart';
+import 'package:atzos_assignment/components/gradient_list.dart';
 import 'package:atzos_assignment/components/teams_list.dart';
 import 'package:atzos_assignment/constants/spacing_constants.dart';
 import 'package:atzos_assignment/screens/classes_page/classes_page.dart';
@@ -11,13 +14,11 @@ import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
 import 'package:atzos_assignment/screens/plans/plans_page.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -70,7 +71,7 @@ class HomePage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width * 0.05,
                     ),
-                    color: const Color(0xffFFE8E1),
+                    color: const Color(0xffeff1f3),
                     child: Column(
                       children: [
                         SpacingConstants().heightBetweenFieldsSmall(context),
@@ -84,7 +85,8 @@ class HomePage extends StatelessWidget {
                                     MediaQuery.of(context).size.height * 0.3,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: Colors.white),
+                                    border: Border.all(
+                                        color: const Color(0xff3b7080)),
                                     image: const DecorationImage(
                                         image: AssetImage(
                                             'assets/spyn_advert.jpeg'),
@@ -283,7 +285,7 @@ class HomePage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width * 0.05,
                     ),
-                    color: const Color(0xffffe8e1),
+                    color: const Color(0xffeff1f3),
                     child: Column(
                       children: [
                         SpacingConstants().heightBetweenFieldsMed(context),
@@ -356,7 +358,7 @@ class HomePage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width * 0.05,
                     ),
-                    color: const Color(0xffffe8e1),
+                    color: const Color(0xffeff1f3),
                     child: Column(
                       children: [
                         SpacingConstants().heightBetweenFieldsMed(context),
@@ -412,7 +414,7 @@ class HomePage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                         horizontal: MediaQuery.of(context).size.width * 0.05,
                       ),
-                      color: const Color(0xffffe8e1),
+                      color: const Color(0xffeff1f3),
                       child: Column(
                         children: [
                           SpacingConstants().heightBetweenFieldsMed(context),
@@ -436,19 +438,33 @@ class HomePage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ClassesPage(
-                                                displayClasses:
-                                                    state.bookingClasses!,
-                                                levels: state.levels!)));
-                                  },
-                                  child: AutoSizeText('Select Class')),
+                              if (!isSmallScreen)
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ClassesPage(
+                                                  displayClasses:
+                                                      state.bookingClasses!,
+                                                  levels: state.levels!)));
+                                    },
+                                    child: const AutoSizeText('Select Class')),
                             ],
                           ),
+                          SpacingConstants().heightBetweenFieldsSmall(context),
+                          if (isSmallScreen)
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ClassesPage(
+                                              displayClasses:
+                                                  state.bookingClasses!,
+                                              levels: state.levels!)));
+                                },
+                                child: const AutoSizeText('Select Class')),
                           SpacingConstants().heightBetweenFieldsMed(context),
                         ],
                       )),
@@ -810,6 +826,8 @@ class HomePage extends StatelessWidget {
   }
 
   Card planCard(Plan plan, bool isSmallScreen, BuildContext context) {
+    int gradientNumber = Random().nextInt(5);
+    print(gradientNumber);
     String? sessionsData =
         plan.sessions! > 0 ? '| ${plan.sessions} sessions' : '';
     int taxAmount = 0;
@@ -822,6 +840,10 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.03,
           vertical: MediaQuery.of(context).size.height * 0.01,
+        ),
+        decoration: BoxDecoration(
+          gradient: gradients[gradientNumber],
+          borderRadius: BorderRadius.circular(10),
         ),
         width: isSmallScreen
             ? MediaQuery.of(context).size.width * 0.8
@@ -984,12 +1006,15 @@ class HomePage extends StatelessWidget {
                             onPressed: () {
                               MapsLauncher.launchCoordinates(lat, lon);
                             },
-                            child: AutoSizeText(
-                              footerInfo.address,
-                              softWrap: true,
-                              maxLines: 2,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 13.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: AutoSizeText(
+                                footerInfo.address,
+                                softWrap: true,
+                                maxLines: 2,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 13.0),
+                              ),
                             ))
                       ],
                     ),

@@ -48,13 +48,18 @@ class _TeamsListState extends State<TeamsList> {
             ),
           SpacingConstants().heightBetweenFieldsSmall(context),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.3,
+            width: MediaQuery.of(context).size.width <= 900
+                ? MediaQuery.of(context).size.width * 0.3
+                : MediaQuery.of(context).size.width * 0.15,
             child: ElevatedButton(
                 onPressed: () {
                   setState(() {
                     isExpanded = !isExpanded;
                   });
                 },
+                style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.02)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
