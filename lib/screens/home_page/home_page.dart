@@ -1328,20 +1328,23 @@ class HomePage extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 15.0),
           ),
           SpacingConstants().heightBetweenFieldsSmall(context),
-          TextButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) => EnquiryForm(
-                        skillsList: skills,
-                        centerList: centers,
-                      ));
-            },
-            style: TextButton.styleFrom(
-                side: const BorderSide(color: Colors.white, width: 2.0)),
-            child: const AutoSizeText(
-              'Enquire',
-              style: TextStyle(color: Colors.white),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: TextButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => EnquiryForm(
+                          skillsList: skills,
+                          centerList: centers,
+                        ));
+              },
+              style: TextButton.styleFrom(
+                  side: const BorderSide(color: Colors.white, width: 2.0)),
+              child: const AutoSizeText(
+                'Enquire',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
           SpacingConstants().heightBetweenFieldsMed(context),

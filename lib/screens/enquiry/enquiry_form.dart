@@ -1,3 +1,4 @@
+import 'package:atzos_assignment/constants/spacing_constants.dart';
 import 'package:atzos_assignment/screens/enquiry/enquiry_classes.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
@@ -250,37 +251,13 @@ class _EnquiryFormState extends State<EnquiryForm> {
                                   : selectedCenterValue!.title,
                             );
 
-                            postEnquiryToApi(postEnquiry);
+                            await postEnquiryToApi(postEnquiry);
 
-                            SnackBar snackBar = SnackBar(
-                              content: Column(
-                                children: [
-                                  const Icon(
-                                    Icons.check,
-                                    color: Color.fromARGB(255, 26, 34, 26),
-                                  ),
-                                  const AutoSizeText(
-                                    'Thank you for your enquiry',
-                                    style: TextStyle(fontSize: 15.0),
-                                  ),
-                                  const AutoSizeText(
-                                    'we will get back to you soon',
-                                    style: TextStyle(fontSize: 10.0),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const AutoSizeText('Ok'),
-                                  )
-                                ],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
+                            Navigator.pop(context);
+
+                            showDialog(
+                                context: context,
+                                builder: (context) => doneDialog(context));
                           }
                         },
                         child: const AutoSizeText('Enquire'),
@@ -294,5 +271,41 @@ class _EnquiryFormState extends State<EnquiryForm> {
         ),
       ),
     ));
+  }
+
+  Widget doneDialog(BuildContext context) {
+    return Dialog(
+      child: Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.02),
+        width: MediaQuery.of(context).size.width * 0.3,
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.check,
+              color: Colors.green,
+            ),
+            const AutoSizeText(
+              'Thank you for your enquiry',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            const AutoSizeText(
+              'we will get back to you soon',
+              style: TextStyle(fontSize: 15.0),
+            ),
+            SpacingConstants().heightBetweenFieldsSmall(context),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const AutoSizeText('Ok'),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
