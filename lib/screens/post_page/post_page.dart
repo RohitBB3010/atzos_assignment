@@ -26,7 +26,8 @@ class PostPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNav(),
+      bottomNavigationBar:
+          MediaQuery.of(context).size.width <= 900 ? CustomBottomNav() : null,
     );
   }
 }

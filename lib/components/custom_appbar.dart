@@ -1,4 +1,6 @@
 import 'package:atzos_assignment/constants/spacing_constants.dart';
+import 'package:atzos_assignment/screens/home_page/home_page.dart';
+import 'package:atzos_assignment/screens/post_page/post_page.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -17,8 +19,13 @@ class CustomAppBar extends AppBar {
           leadingWidth: MediaQuery.of(context).size.width * 0.08,
           title: Row(
             children: [
-              CircleAvatar(
-                radius: MediaQuery.of(context).size.width * 0.02,
+              SizedBox(
+                width: MediaQuery.of(context).size.width <= 900
+                    ? MediaQuery.of(context).size.width * 0.08
+                    : MediaQuery.of(context).size.width * 0.05,
+                height: MediaQuery.of(context).size.width <= 900
+                    ? MediaQuery.of(context).size.height * 0.08
+                    : MediaQuery.of(context).size.height * 0.05,
                 child: Image.asset('assets/spyn_logo.jpeg'),
               ),
               SpacingConstants().widthBetweenFieldsSmall(context),
@@ -38,16 +45,28 @@ class CustomAppBar extends AppBar {
               ),
             ],
           ),
-          actions: MediaQuery.of(context).size.width > 700
+          actions: MediaQuery.of(context).size.width > 900
               ? [
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()),
+                            (route) => false);
+                      },
                       child: const AutoSizeText(
                         'Home',
                         style: TextStyle(color: Colors.black, fontSize: 20.0),
                       )),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PostPage()),
+                          (route) => false);
+                    },
                     child: const AutoSizeText(
                       'Posts',
                       style: TextStyle(color: Colors.black, fontSize: 20.0),
@@ -59,7 +78,7 @@ class CustomAppBar extends AppBar {
                         side: const BorderSide(color: Colors.green)),
                     child: const AutoSizeText(
                       'Login',
-                      style: TextStyle(color: Colors.green),
+                      style: TextStyle(color: Colors.green, fontSize: 20),
                     ),
                   )
                 ]

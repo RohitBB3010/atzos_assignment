@@ -14,6 +14,7 @@ import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
 import 'package:atzos_assignment/screens/plans/plans_page.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -32,7 +33,7 @@ class HomePage extends StatelessWidget {
           titleText: 'Home',
           context: context,
         ),
-        bottomNavigationBar: MediaQuery.of(context).size.width < 700
+        bottomNavigationBar: MediaQuery.of(context).size.width < 900
             ? const CustomBottomNav()
             : null,
         body: BlocBuilder<HomePageCubit, HomePageState>(
@@ -292,6 +293,8 @@ class HomePage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            SpacingConstants()
+                                .heightBetweenFieldsSmall(context),
                             const AutoSizeText(
                               'Trial Classes',
                               maxLines: 1,
@@ -613,11 +616,13 @@ class HomePage extends StatelessWidget {
             AutoSizeText(
               'We require you to be assigned the ${levels.toString()} level to book this class.If you are our client and have this level assigned, you may BOOK by logging in.',
               maxLines: 4,
+              style: const TextStyle(fontSize: 15.0),
             ),
             SpacingConstants().heightBetweenFieldsSmall(context),
             const AutoSizeText(
               'If you are not our client, please contact us at 9876543210 to BOOK this class',
               maxLines: 4,
+              style: TextStyle(fontSize: 15.0),
             ),
             SpacingConstants().heightBetweenFieldsSmall(context),
             Row(
@@ -1143,7 +1148,12 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) =>
+                            privacyPolicy(footerInfo.privacyPolicy, context));
+                  },
                   child: const AutoSizeText(
                     'Privacy Policy',
                     style: TextStyle(color: Colors.white, fontSize: 18.0),
@@ -1153,7 +1163,12 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(fontSize: 30.0, color: Colors.white),
               ),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) =>
+                            privacyPolicy(footerInfo.terms, context));
+                  },
                   child: const AutoSizeText(
                     'Terms Of Service',
                     style: TextStyle(color: Colors.white, fontSize: 18.0),
@@ -1381,7 +1396,14 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return privacyPolicy(
+                              footerInfo.privacyPolicy, context);
+                        });
+                  },
                   child: const AutoSizeText(
                     'Privacy Policy',
                     style: TextStyle(color: Colors.white, fontSize: 18.0),
@@ -1391,7 +1413,13 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(fontSize: 30.0, color: Colors.white),
               ),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return privacyPolicy(footerInfo.terms, context);
+                        });
+                  },
                   child: const AutoSizeText(
                     'Terms Of Service',
                     style: TextStyle(color: Colors.white, fontSize: 18.0),
@@ -1402,4 +1430,50 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget privacyPolicy(String policy, BuildContext context) {
+  return Dialog(
+    child: Container(
+      color: Colors.white,
+      width: MediaQuery.of(context).size.width * 0.8,
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.02,
+          vertical: MediaQuery.of(context).size.height * 0.02),
+      child: SingleChildScrollView(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.7,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.04,
+                      height: MediaQuery.of(context).size.height * 0.04,
+                      child: Image.asset('assets/spyn_logo.jpeg')),
+                  const AutoSizeText(
+                    'Star Academy',
+                    style: TextStyle(fontSize: 25.0),
+                  )
+                ],
+              ),
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.01,
+                      vertical: MediaQuery.of(context).size.height * 0.01),
+                  child: AutoSizeText(
+                    policy,
+                    softWrap: true,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
