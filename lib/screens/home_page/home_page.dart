@@ -3,6 +3,7 @@ import 'package:atzos_assignment/components/custom_bottom_nav.dart';
 import 'package:atzos_assignment/components/teams_list.dart';
 import 'package:atzos_assignment/constants/spacing_constants.dart';
 import 'package:atzos_assignment/screens/classes_page/classes_page.dart';
+import 'package:atzos_assignment/screens/enquiry/enquiry_form.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_cubit.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
@@ -71,6 +72,13 @@ class HomePage extends StatelessWidget {
                         SpacingConstants().heightBetweenFieldsSmall(context),
                         Row(
                           children: [
+                            TextButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => EnquiryForm());
+                                },
+                                child: Text('Form')),
                             if (!isSmallScreen)
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.45,
@@ -1237,7 +1245,10 @@ class HomePage extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.85,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                    context: context, builder: (context) => EnquiryForm());
+              },
               style: TextButton.styleFrom(
                   side: const BorderSide(color: Colors.white, width: 2.0)),
               child: const AutoSizeText(
