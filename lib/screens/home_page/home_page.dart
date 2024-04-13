@@ -1307,7 +1307,17 @@ class HomePage extends StatelessWidget {
             child: TextButton(
               onPressed: () {
                 showDialog(
-                    context: context, builder: (context) => EnquiryForm());
+                    context: context,
+                    builder: (context) => ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width <= 900
+                              ? MediaQuery.of(context).size.width * 0.8
+                              : MediaQuery.of(context).size.width * 0.5,
+                          maxHeight: MediaQuery.of(context).size.width <= 900
+                              ? MediaQuery.of(context).size.height * 0.8
+                              : MediaQuery.of(context).size.height * 0.5,
+                        ),
+                        child: EnquiryForm()));
               },
               style: TextButton.styleFrom(
                   side: const BorderSide(color: Colors.white, width: 2.0)),

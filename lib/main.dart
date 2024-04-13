@@ -1,3 +1,4 @@
+import 'package:atzos_assignment/screens/enquiry/enquiry_form.dart';
 import 'package:atzos_assignment/screens/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return const HomePage();
+    return EnquiryForm();
   }
 }

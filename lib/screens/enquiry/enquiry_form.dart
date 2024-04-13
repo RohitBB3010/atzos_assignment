@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 
 class EnquiryForm extends StatefulWidget {
@@ -60,16 +61,7 @@ class _EnquiryFormState extends State<EnquiryForm> {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isSmallScreen = screenWidth <= 900 ? true : false;
     return Dialog(
-      shape: StadiumBorder(),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: isSmallScreen
-              ? MediaQuery.of(context).size.width * 0.8
-              : MediaQuery.of(context).size.width * 0.5,
-          maxHeight: isSmallScreen
-              ? MediaQuery.of(context).size.width * 0.8
-              : MediaQuery.of(context).size.width * 0.6,
-        ),
+      child: SingleChildScrollView(
         child: ScaffoldMessenger(
           child: Builder(builder: (enquiryContext) {
             return Scaffold(
@@ -350,6 +342,94 @@ class _EnquiryFormState extends State<EnquiryForm> {
                   }),
             );
           }),
+        ),
+      ),
+    );
+
+    return Dialog(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const AutoSizeText(
+              'Enquiry Form',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            const AutoSizeText(
+              'We would love to hear from you',
+              style: TextStyle(fontSize: 13.0),
+            ),
+            SpacingConstants().heightBetweenFieldsSmall(context),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(Icons.person),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  child: TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.02,
+                            vertical: 0),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                                color: Colors.black.withOpacity(0.7)))),
+                  ),
+                ),
+              ],
+            ),
+            SpacingConstants().heightBetweenFieldsSmall(context),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(FontAwesomeIcons.genderless),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                      hint: const AutoSizeText('Select Gender'),
+                      items: genders.map((gender) {
+                        return DropdownMenuItem(
+                            value: gender, child: AutoSizeText(gender));
+                      }).toList(),
+                      value: selectedGenderValue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedGenderValue = value;
+                        });
+                      },
+                    ))),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(FontAwesomeIcons.star),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: DropdownButtonHideUnderline(
+                        child: DropdownButton2<Skill>(
+                      hint: const AutoSizeText('Select Skill*'),
+                      items: skills.map((skill) {
+                        return DropdownMenuItem(
+                            value: skill, child: AutoSizeText(skill.name));
+                      }).toList(),
+                      value: selectedSkillValue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedSkillValue = value!;
+                        });
+                      },
+                    ))),
+              ],
+            )
+          ],
         ),
       ),
     );
