@@ -108,7 +108,9 @@ class _PagesState extends State<Pages> {
             children: [
               Center(
                 child: CircleAvatar(
-                    radius: MediaQuery.of(context).size.width * 0.045,
+                    radius: MediaQuery.of(context).size.width <= 900
+                        ? MediaQuery.of(context).size.width * 0.04
+                        : MediaQuery.of(context).size.width * 0.02,
                     child: AutoSizeText(
                       plan.name[0].toUpperCase(),
                       maxLines: 1,
