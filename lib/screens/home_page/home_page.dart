@@ -6,6 +6,7 @@ import 'package:atzos_assignment/components/gradient_list.dart';
 import 'package:atzos_assignment/components/teams_list.dart';
 import 'package:atzos_assignment/constants/spacing_constants.dart';
 import 'package:atzos_assignment/screens/classes_page/classes_page.dart';
+import 'package:atzos_assignment/screens/enquiry/enquiry_classes.dart';
 import 'package:atzos_assignment/screens/enquiry/enquiry_form.dart';
 import 'package:atzos_assignment/screens/home_page/formatting_functions.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
@@ -472,10 +473,20 @@ class HomePage extends StatelessWidget {
                         ],
                       )),
                   isSmallScreen
-                      ? footerSmall(state.footerInfo!, context,
-                          state.footerInfo!.lat!, state.footerInfo!.lon!)
-                      : footerLarge(state.footerInfo!, context,
-                          state.footerInfo!.lat!, state.footerInfo!.lon!),
+                      ? footerSmall(
+                          state.footerInfo!,
+                          context,
+                          state.footerInfo!.lat!,
+                          state.footerInfo!.lon!,
+                          state.skills!,
+                          state.centers!)
+                      : footerLarge(
+                          state.footerInfo!,
+                          context,
+                          state.footerInfo!.lat!,
+                          state.footerInfo!.lon!,
+                          state.skills!,
+                          state.centers!),
                 ],
               ));
             }
@@ -902,7 +913,13 @@ class HomePage extends StatelessWidget {
   }
 
   Widget footerLarge(
-      BasicData footerInfo, BuildContext context, double lat, double lon) {
+    BasicData footerInfo,
+    BuildContext context,
+    double lat,
+    double lon,
+    List<Skill> skills,
+    List<CenterItem> centers,
+  ) {
     return Container(
       width: MediaQuery.of(context).size.width,
       color: const Color(0xff212121),
@@ -1053,7 +1070,10 @@ class HomePage extends StatelessWidget {
                         onPressed: () {
                           showDialog(
                               context: context,
-                              builder: (context) => EnquiryForm());
+                              builder: (context) => EnquiryForm(
+                                    centerList: centers,
+                                    skillsList: skills,
+                                  ));
                         },
                         style: TextButton.styleFrom(
                             side: const BorderSide(
@@ -1181,7 +1201,13 @@ class HomePage extends StatelessWidget {
   }
 
   Widget footerSmall(
-      BasicData footerInfo, BuildContext context, double lat, double lon) {
+    BasicData footerInfo,
+    BuildContext context,
+    double lat,
+    double lon,
+    List<Skill> skills,
+    List<CenterItem> centers,
+  ) {
     return Container(
       width: MediaQuery.of(context).size.width,
       color: const Color(0xff212121),
@@ -1302,29 +1328,20 @@ class HomePage extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 15.0),
           ),
           SpacingConstants().heightBetweenFieldsSmall(context),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.85,
-            child: TextButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width <= 900
-                              ? MediaQuery.of(context).size.width * 0.8
-                              : MediaQuery.of(context).size.width * 0.5,
-                          maxHeight: MediaQuery.of(context).size.width <= 900
-                              ? MediaQuery.of(context).size.height * 0.8
-                              : MediaQuery.of(context).size.height * 0.5,
-                        ),
-                        child: EnquiryForm()));
-              },
-              style: TextButton.styleFrom(
-                  side: const BorderSide(color: Colors.white, width: 2.0)),
-              child: const AutoSizeText(
-                'Enquire',
-                style: TextStyle(color: Colors.white),
-              ),
+          TextButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => EnquiryForm(
+                        skillsList: skills,
+                        centerList: centers,
+                      ));
+            },
+            style: TextButton.styleFrom(
+                side: const BorderSide(color: Colors.white, width: 2.0)),
+            child: const AutoSizeText(
+              'Enquire',
+              style: TextStyle(color: Colors.white),
             ),
           ),
           SpacingConstants().heightBetweenFieldsMed(context),

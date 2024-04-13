@@ -1,3 +1,4 @@
+import 'package:atzos_assignment/screens/enquiry/enquiry_classes.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 
@@ -13,6 +14,8 @@ class HomePageDataLoadedState extends HomePageState {
   List<TeamMember>? teamMembers;
   List<Plan>? plans;
   BasicData? footerInfo;
+  List<CenterItem>? centers;
+  List<Skill>? skills;
 
   HomePageDataLoadedState({
     this.bookingClasses,
@@ -21,5 +24,7 @@ class HomePageDataLoadedState extends HomePageState {
     this.teamMembers,
     this.plans,
     this.footerInfo,
+    this.centers,
+    this.skills,
   });
 }

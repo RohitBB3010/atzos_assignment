@@ -1,3 +1,4 @@
+import 'package:atzos_assignment/screens/enquiry/enquiry_classes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
@@ -13,7 +14,8 @@ class HomePageCubit extends Cubit<HomePageState> {
     List<TrailBookClass> bookingClassesList = [];
     List<TeamMember> membersList = [];
     List<Plan> plansList = [];
-    bool isExpanded = false;
+    List<CenterItem> centers = [];
+    List<Skill> skills = [];
 
     Dio dio = Dio();
 
@@ -45,13 +47,30 @@ class HomePageCubit extends Cubit<HomePageState> {
       plansList.add(plan);
     }
 
+    Response response = await dio.get(
+        'https://devconnect.spyn.co/api/web/v4/homepage/center-skill-list?venue_id=729');
+
+    var centerItemsJson = response.data['centers'];
+    var skillsList = response.data['skill'];
+
+    for (int i = 0; i < centerItemsJson.length; i++) {
+      CenterItem tempCenter = CenterItem.fromJson(centerItemsJson[i]);
+      centers.add(tempCenter);
+    }
+
+    for (int i = 0; i < skillsList.length; i++) {
+      Skill tempSkill = Skill.fromJson(skillsList[i]);
+      skills.add(tempSkill);
+    }
+
     emit(HomePageDataLoadedState(
-      bookingClasses: bookingClassesList,
-      levels: levels,
-      trailClasses: bookingClassesList,
-      teamMembers: membersList,
-      plans: plansList,
-      footerInfo: footerData,
-    ));
+        bookingClasses: bookingClassesList,
+        levels: levels,
+        trailClasses: bookingClassesList,
+        teamMembers: membersList,
+        plans: plansList,
+        footerInfo: footerData,
+        skills: skills,
+        centers: centers));
   }
 }

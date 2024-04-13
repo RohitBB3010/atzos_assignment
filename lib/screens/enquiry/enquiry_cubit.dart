@@ -29,8 +29,6 @@ class EnquiryCubit extends Cubit<EnquiryState> {
         skills.add(tempSkill);
       }
 
-      print(skills);
-      print(centers);
       emit(EnquiryState(
         skills: skills,
         centers: centers,
