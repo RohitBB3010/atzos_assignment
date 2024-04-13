@@ -11,6 +11,7 @@ import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
 import 'package:atzos_assignment/screens/plans/plans_page.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -511,32 +512,35 @@ class HomePage extends StatelessWidget {
                           fit: BoxFit.contain),
                     ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AutoSizeText(
-                        bookingClass.title,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        //maxLines: 1,
-                        style: const TextStyle(fontSize: 18.0),
-                      ),
-                      AutoSizeText(
-                        ' ${bookingClass.sportName} $levelData',
-                        maxLines: 1,
-                        style: const TextStyle(fontSize: 13.0),
-                      ),
-                      AutoSizeText(
-                        bookingClass.location,
-                        maxLines: 1,
-                        style: const TextStyle(fontSize: 13.0),
-                      ),
-                      Column(
-                        children: createTimeRangeWidgets(
-                            groupDaysByTime(bookingClass.daysOfWeek!)),
-                      )
-                    ],
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AutoSizeText(
+                          bookingClass.title,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          //maxLines: 1,
+                          style: const TextStyle(fontSize: 18.0),
+                        ),
+                        AutoSizeText(
+                          ' ${bookingClass.sportName} $levelData',
+                          maxLines: 1,
+                          style: const TextStyle(fontSize: 13.0),
+                        ),
+                        AutoSizeText(
+                          bookingClass.location,
+                          maxLines: 1,
+                          style: const TextStyle(fontSize: 13.0),
+                        ),
+                        if (createTimeRangeWidgets(
+                                groupDaysByTime(bookingClass.daysOfWeek!))
+                            .isNotEmpty)
+                          createTimeRangeWidgets(
+                              groupDaysByTime(bookingClass.daysOfWeek!))[0]
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -718,7 +722,7 @@ class HomePage extends StatelessWidget {
                       icon: const Icon(Icons.location_pin)),
                 ],
               ),
-              SpacingConstants().heightBetweenFieldsMed(context),
+              SpacingConstants().heightBetweenFieldsSmall(context),
               const AutoSizeText(
                 'Timings',
                 overflow: TextOverflow.ellipsis,
@@ -726,6 +730,7 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: createTimeRangeWidgets(
                     groupDaysByTime(dialogClass.daysOfWeek!)),
               ),

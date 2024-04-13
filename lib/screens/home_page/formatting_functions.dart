@@ -51,15 +51,21 @@ Map<String, List<String>> groupDaysByTime(List<Day> daysOfWeek) {
 }
 
 List<Widget> createTimeRangeWidgets(Map<String, List<String>> timeRanges) {
-  final formattedString = formatTimeRanges(timeRanges);
-  final List<String> splitRanges = formattedString.split(' ');
+  return timeRanges.entries.map((entry) {
+    final timeRange = entry.key;
+    final days = entry.value;
 
-  return splitRanges
-      .map((range) => AutoSizeText(
-            range,
-            style: TextStyle(fontSize: 16),
-          ))
-      .toList();
+    final formattedTimeRange =
+        returnCustomDate(timeRange.split(" - ")[0], timeRange.split(" - ")[1]);
+
+    return AutoSizeText(
+      "$formattedTimeRange: ${days.join(' ')}",
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      softWrap: true,
+      style: const TextStyle(fontSize: 13),
+    );
+  }).toList();
 }
 
 String formatTimeRanges(Map<String, List<String>> timeRanges) {
