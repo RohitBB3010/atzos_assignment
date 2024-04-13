@@ -4,6 +4,7 @@ import 'package:atzos_assignment/components/teams_list.dart';
 import 'package:atzos_assignment/constants/spacing_constants.dart';
 import 'package:atzos_assignment/screens/classes_page/classes_page.dart';
 import 'package:atzos_assignment/screens/enquiry/enquiry_form.dart';
+import 'package:atzos_assignment/screens/home_page/formatting_functions.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_cubit.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_state.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -72,13 +74,6 @@ class HomePage extends StatelessWidget {
                         SpacingConstants().heightBetweenFieldsSmall(context),
                         Row(
                           children: [
-                            TextButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => EnquiryForm());
-                                },
-                                child: Text('Form')),
                             if (!isSmallScreen)
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.45,
@@ -516,30 +511,32 @@ class HomePage extends StatelessWidget {
                           fit: BoxFit.contain),
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AutoSizeText(
-                          bookingClass.title,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                          //maxLines: 1,
-                          style: const TextStyle(fontSize: 18.0),
-                        ),
-                        AutoSizeText(
-                          ' ${bookingClass.sportName} $levelData',
-                          maxLines: 1,
-                          style: const TextStyle(fontSize: 13.0),
-                        ),
-                        AutoSizeText(
-                          bookingClass.location,
-                          maxLines: 1,
-                          style: const TextStyle(fontSize: 13.0),
-                        )
-                      ],
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AutoSizeText(
+                        bookingClass.title,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        //maxLines: 1,
+                        style: const TextStyle(fontSize: 18.0),
+                      ),
+                      AutoSizeText(
+                        ' ${bookingClass.sportName} $levelData',
+                        maxLines: 1,
+                        style: const TextStyle(fontSize: 13.0),
+                      ),
+                      AutoSizeText(
+                        bookingClass.location,
+                        maxLines: 1,
+                        style: const TextStyle(fontSize: 13.0),
+                      ),
+                      Column(
+                        children: createTimeRangeWidgets(
+                            groupDaysByTime(bookingClass.daysOfWeek!)),
+                      )
+                    ],
                   ),
                 ],
               ),
@@ -664,7 +661,7 @@ class HomePage extends StatelessWidget {
             horizontal: MediaQuery.of(context).size.width * 0.03),
         width: isSmallScreen
             ? MediaQuery.of(context).size.width * 0.8
-            : MediaQuery.of(context).size.width * 0.25,
+            : MediaQuery.of(context).size.width * 0.3,
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -727,6 +724,10 @@ class HomePage extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+              ),
+              Column(
+                children: createTimeRangeWidgets(
+                    groupDaysByTime(dialogClass.daysOfWeek!)),
               ),
               Center(
                   child: TextButton(
@@ -1004,7 +1005,11 @@ class HomePage extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.2,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => EnquiryForm());
+                        },
                         style: TextButton.styleFrom(
                             side: const BorderSide(
                                 color: Colors.white, width: 2.0)),

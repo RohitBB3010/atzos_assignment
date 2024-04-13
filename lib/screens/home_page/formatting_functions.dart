@@ -1,24 +1,7 @@
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
-
-Map<List<String?>, List<int>> groupDaysByTime(List<Day> days) {
-  Map<List<String?>, List<int>> groupedDays = {};
-
-  if (days.isNotEmpty) {
-    for (var day in days) {
-      //String key = '${day.startTime} - ${day.endTime}';
-      List<String?> key = [day.startTime, day.endTime];
-      if (!groupedDays.containsKey(key)) {
-        if (day.day != null) {
-          groupedDays[key] = [day.day!];
-        }
-      } else {
-        groupedDays[key]!.add(day.day!);
-      }
-    }
-  }
-
-  return groupedDays;
-}
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 String getDayOfWeek(int dayInt) {
   switch (dayInt) {
@@ -41,28 +24,55 @@ String getDayOfWeek(int dayInt) {
   }
 }
 
-String getDateFormat(Map<List<String?>, List<int>> data) {
-  // Define a list of day abbreviations
-  List<String> dayAbbreviations = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+String convertTimeFormat(String timeString) {
+  final parsedTime = DateFormat.Hm().parse(timeString);
+  final formattedTime = DateFormat('hh:mm a').format(parsedTime);
+  return formattedTime;
+}
 
-  // Initialize variables to store start and end times
-  late String startTime, endTime;
+String returnCustomDate(String startTime, String endTime) {
+  return '${convertTimeFormat(startTime)} - ${convertTimeFormat(endTime)}';
+}
 
-  // Parse start and end times from the first map entry
-  for (var entry in data.keys) {
-    startTime = entry[0]!;
-    endTime = entry[1]!;
-    break; // Stop after parsing the first entry
+Map<String, List<String>> groupDaysByTime(List<Day> daysOfWeek) {
+  Map<String, List<String>> groupedDayTimes = {};
+
+  for (final day in daysOfWeek) {
+    if (day.day != null && day.startTime != null && day.endTime != null) {
+      String timeRange = returnCustomDate(day.startTime!, day.endTime!);
+      if (!groupedDayTimes.containsKey(timeRange)) {
+        groupedDayTimes[timeRange] = [];
+      }
+      groupedDayTimes[timeRange]!.add(getDayOfWeek(day.day!));
+    }
   }
 
-  // Convert list of day indices to day abbreviations
-  List<String> daysOfWeek = data.values
-      .expand((days) => days.map((day) => dayAbbreviations[day]))
+  return groupedDayTimes;
+}
+
+List<Widget> createTimeRangeWidgets(Map<String, List<String>> timeRanges) {
+  final formattedString = formatTimeRanges(timeRanges);
+  final List<String> splitRanges = formattedString.split(' ');
+
+  return splitRanges
+      .map((range) => AutoSizeText(
+            range,
+            style: TextStyle(fontSize: 16),
+          ))
       .toList();
+}
 
-  // Concatenate day abbreviations and start-end times
-  String formattedString = '${daysOfWeek.join(' ')} $startTime-$endTime';
+String formatTimeRanges(Map<String, List<String>> timeRanges) {
+  String outputString = "";
+  for (final timeRange in timeRanges.keys) {
+    final days = timeRanges[timeRange]!;
 
-  print(formattedString);
-  return formattedString;
+    final parts = timeRange.split(" - ");
+    final startTime = parts[0];
+    final endTime = parts[1];
+
+    outputString +=
+        "$startTime - $endTime ${days.join(' ')} "; // Use join with space
+  }
+  return outputString.trim();
 }

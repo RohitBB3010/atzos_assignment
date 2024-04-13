@@ -56,7 +56,7 @@ class CenterItem {
 class Enquiry {
   String name;
   String gender;
-  String skill;
+  int skill;
   String? center;
 
   Enquiry({
