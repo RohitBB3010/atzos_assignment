@@ -1,3 +1,4 @@
+import 'package:atzos_assignment/constants/spacing_constants.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -20,6 +21,7 @@ class CustomAppBar extends AppBar {
                 radius: MediaQuery.of(context).size.width * 0.02,
                 child: Image.asset('assets/spyn_logo.jpeg'),
               ),
+              SpacingConstants().widthBetweenFieldsSmall(context),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

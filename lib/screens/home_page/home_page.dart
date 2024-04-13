@@ -66,11 +66,12 @@ class HomePage extends StatelessWidget {
               return SingleChildScrollView(
                   child: Column(
                 children: [
-                  Padding(
+                  Container(
                     padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.05),
+                      horizontal: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                    color: const Color(0xffFFE8E1),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SpacingConstants().heightBetweenFieldsSmall(context),
                         Row(
@@ -145,7 +146,7 @@ class HomePage extends StatelessWidget {
                                                 .htmlData!
                                                 .externalLinkUrl)),
                                       ],
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -218,6 +219,17 @@ class HomePage extends StatelessWidget {
                             ],
                           ),
                         SpacingConstants().heightBetweenFieldsMed(context),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                    color: const Color(0xffD4DCCD),
+                    child: Column(
+                      children: [
+                        SpacingConstants().heightBetweenFieldsMed(context),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -260,188 +272,186 @@ class HomePage extends StatelessWidget {
                                       false);
                                 }).toList(),
                               ),
-                              SpacingConstants()
-                                  .heightBetweenFieldsMed(context),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const AutoSizeText(
-                                    'Trial Classes',
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: 30.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return ClassesPage(
-                                              displayClasses:
-                                                  state.bookingClasses!,
-                                              levels: state.levels!);
-                                        }));
-                                      },
-                                      child: const AutoSizeText('See More'))
-                                ],
-                              ),
-                              SpacingConstants()
-                                  .heightBetweenFieldsSmall(context),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Wrap(
-                                      spacing:
-                                          MediaQuery.of(context).size.width *
-                                              0.03,
-                                      runSpacing:
-                                          MediaQuery.of(context).size.height *
-                                              0.03,
-                                      children:
-                                          limitedTrailClass.map((bookingClass) {
-                                        return bookingClassCard(
-                                            bookingClass,
-                                            state.levels,
-                                            isSmallScreen,
-                                            context,
-                                            true);
-                                      }).toList(),
-                                    ),
-                                    SpacingConstants()
-                                        .heightBetweenFieldsMed(context),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        AutoSizeText(
-                                          state.footerInfo!.additionalInfo[0]
-                                              .title,
-                                          style: const TextStyle(
-                                              fontSize: 25.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        AutoSizeText(
-                                          state.footerInfo!.additionalInfo[0]
-                                              .descpription,
-                                          style:
-                                              const TextStyle(fontSize: 15.0),
-                                        ),
-                                        SpacingConstants()
-                                            .heightBetweenFieldsSmall(context),
-                                        AutoSizeText(
-                                          state.footerInfo!.additionalInfo[1]
-                                              .title,
-                                          style: const TextStyle(
-                                              fontSize: 25.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        AutoSizeText(
-                                          state.footerInfo!.additionalInfo[1]
-                                              .descpription,
-                                          style:
-                                              const TextStyle(fontSize: 15.0),
-                                        )
-                                      ],
-                                    ),
-                                    SpacingConstants()
-                                        .heightBetweenFieldsMed(context),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const AutoSizeText(
-                                          'Plans',
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                              fontSize: 30.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) {
-                                                return Pages(
-                                                  plansList: state.plans!,
-                                                );
-                                              }));
-                                            },
-                                            child:
-                                                const AutoSizeText('See More'))
-                                      ],
-                                    ),
-                                    SpacingConstants()
-                                        .heightBetweenFieldsSmall(context),
-                                    Wrap(
-                                      spacing:
-                                          MediaQuery.of(context).size.width *
-                                              0.03,
-                                      runSpacing:
-                                          MediaQuery.of(context).size.height *
-                                              0.03,
-                                      children: limitedPlans.map((plan) {
-                                        return planCard(
-                                            plan, isSmallScreen, context);
-                                      }).toList(),
-                                    ),
-                                    SpacingConstants()
-                                        .heightBetweenFieldsLarge(context),
-                                    TeamsList(
-                                        teamList: state.teamMembers!,
-                                        isSmallScreen: isSmallScreen),
-                                    SpacingConstants()
-                                        .heightBetweenFieldsLarge(context),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            AutoSizeText(
-                                              'Join Us',
-                                              style: TextStyle(
-                                                  fontSize: 25.0,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            AutoSizeText(
-                                              'You can select to join from a list of classes',
-                                              style: TextStyle(
-                                                fontSize: 15.0,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ClassesPage(
-                                                              displayClasses: state
-                                                                  .bookingClasses!,
-                                                              levels: state
-                                                                  .levels!)));
-                                            },
-                                            child: AutoSizeText('Select Class'))
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
                             ],
                           ),
                         ),
-                        SpacingConstants().heightBetweenFieldsLarge(context),
+                        SpacingConstants().heightBetweenFieldsMed(context),
                       ],
                     ),
                   ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                    color: const Color(0xffffe8e1),
+                    child: Column(
+                      children: [
+                        SpacingConstants().heightBetweenFieldsMed(context),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const AutoSizeText(
+                              'Trial Classes',
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: 30.0, fontWeight: FontWeight.bold),
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ClassesPage(
+                                        displayClasses: state.bookingClasses!,
+                                        levels: state.levels!);
+                                  }));
+                                },
+                                child: const AutoSizeText('See More'))
+                          ],
+                        ),
+                        Wrap(
+                          spacing: MediaQuery.of(context).size.width * 0.03,
+                          runSpacing: MediaQuery.of(context).size.height * 0.03,
+                          children: limitedTrailClass.map((bookingClass) {
+                            return bookingClassCard(bookingClass, state.levels,
+                                isSmallScreen, context, true);
+                          }).toList(),
+                        ),
+                        SpacingConstants().heightBetweenFieldsMed(context),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                    color: const Color(0xffD4DCCD),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SpacingConstants().heightBetweenFieldsMed(context),
+                        AutoSizeText(
+                          state.footerInfo!.additionalInfo[0].title,
+                          style: const TextStyle(
+                              fontSize: 25.0, fontWeight: FontWeight.bold),
+                        ),
+                        AutoSizeText(
+                          state.footerInfo!.additionalInfo[0].descpription,
+                          style: const TextStyle(fontSize: 15.0),
+                        ),
+                        SpacingConstants().heightBetweenFieldsSmall(context),
+                        AutoSizeText(
+                          state.footerInfo!.additionalInfo[1].title,
+                          style: const TextStyle(
+                              fontSize: 25.0, fontWeight: FontWeight.bold),
+                        ),
+                        AutoSizeText(
+                          state.footerInfo!.additionalInfo[1].descpription,
+                          style: const TextStyle(fontSize: 15.0),
+                        ),
+                        SpacingConstants().heightBetweenFieldsMed(context),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                    color: const Color(0xffffe8e1),
+                    child: Column(
+                      children: [
+                        SpacingConstants().heightBetweenFieldsMed(context),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const AutoSizeText(
+                              'Plans',
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: 30.0, fontWeight: FontWeight.bold),
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return Pages(
+                                      plansList: state.plans!,
+                                    );
+                                  }));
+                                },
+                                child: const AutoSizeText('See More'))
+                          ],
+                        ),
+                        SpacingConstants().heightBetweenFieldsSmall(context),
+                        Wrap(
+                          spacing: MediaQuery.of(context).size.width * 0.03,
+                          runSpacing: MediaQuery.of(context).size.height * 0.03,
+                          children: limitedPlans.map((plan) {
+                            return planCard(plan, isSmallScreen, context);
+                          }).toList(),
+                        ),
+                        SpacingConstants().heightBetweenFieldsMed(context),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05,
+                    ),
+                    color: const Color(0xffd4dccd),
+                    child: Column(
+                      children: [
+                        SpacingConstants().heightBetweenFieldsMed(context),
+                        TeamsList(
+                            teamList: state.teamMembers!,
+                            isSmallScreen: isSmallScreen),
+                        SpacingConstants().heightBetweenFieldsMed(context),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                      color: const Color(0xffffe8e1),
+                      child: Column(
+                        children: [
+                          SpacingConstants().heightBetweenFieldsMed(context),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AutoSizeText(
+                                    'Join Us',
+                                    style: TextStyle(
+                                        fontSize: 25.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  AutoSizeText(
+                                    'You can select to join from a list of classes',
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ClassesPage(
+                                                displayClasses:
+                                                    state.bookingClasses!,
+                                                levels: state.levels!)));
+                                  },
+                                  child: AutoSizeText('Select Class')),
+                            ],
+                          ),
+                          SpacingConstants().heightBetweenFieldsMed(context),
+                        ],
+                      )),
                   isSmallScreen
                       ? footerSmall(state.footerInfo!, context,
                           state.footerInfo!.lat!, state.footerInfo!.lon!)

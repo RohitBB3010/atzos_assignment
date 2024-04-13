@@ -23,44 +23,50 @@ class _TeamsListState extends State<TeamsList> {
     List<TeamMember> displayTeam =
         isExpanded ? widget.teamList : widget.teamList.take(3).toList();
 
-    return Column(
-      children: [
-        const AutoSizeText(
-          'Teams',
-          maxLines: 1,
-          style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-        ),
-        SpacingConstants().heightBetweenFieldsSmall(context),
-        if (widget.teamList.isNotEmpty)
-          Wrap(
-            spacing: MediaQuery.of(context).size.width * 0.1,
-            runSpacing: MediaQuery.of(context).size.height * 0.03,
-            children: displayTeam.map((member) {
-              return widget.isSmallScreen
-                  ? const HomePage().smallTeamWidget(member, context)
-                  : const HomePage().largeTeamWidget(member, context);
-            }).toList(),
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width * 0.05,
+      ),
+      color: const Color(0xffd4dccd),
+      child: Column(
+        children: [
+          const AutoSizeText(
+            'Teams',
+            maxLines: 1,
+            style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
           ),
-        SpacingConstants().heightBetweenFieldsSmall(context),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.3,
-          child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  isExpanded = !isExpanded;
-                });
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AutoSizeText(isExpanded ? 'See Less' : 'See More'),
-                  Icon(isExpanded
-                      ? Icons.arrow_upward_outlined
-                      : Icons.arrow_downward_outlined)
-                ],
-              )),
-        ),
-      ],
+          SpacingConstants().heightBetweenFieldsSmall(context),
+          if (widget.teamList.isNotEmpty)
+            Wrap(
+              spacing: MediaQuery.of(context).size.width * 0.1,
+              runSpacing: MediaQuery.of(context).size.height * 0.03,
+              children: displayTeam.map((member) {
+                return widget.isSmallScreen
+                    ? const HomePage().smallTeamWidget(member, context)
+                    : const HomePage().largeTeamWidget(member, context);
+              }).toList(),
+            ),
+          SpacingConstants().heightBetweenFieldsSmall(context),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    isExpanded = !isExpanded;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AutoSizeText(isExpanded ? 'See Less' : 'See More'),
+                    Icon(isExpanded
+                        ? Icons.arrow_upward_outlined
+                        : Icons.arrow_downward_outlined)
+                  ],
+                )),
+          ),
+        ],
+      ),
     );
   }
 }
