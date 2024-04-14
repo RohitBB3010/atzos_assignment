@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:atzos_assignment/components/gradient_list.dart';
 import 'package:atzos_assignment/constants/spacing_constants.dart';
 import 'package:atzos_assignment/screens/home_page/home_page.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
@@ -43,7 +46,8 @@ class _PagesState extends State<Pages> {
             child: ListView.builder(
                 itemCount: searchPlans.length,
                 itemBuilder: (context, i) {
-                  return planCard(searchPlans[i], isSmallScreen, context);
+                  return HomePage()
+                      .planCard(searchPlans[i], isSmallScreen, context);
                 }),
           ),
         ],
@@ -78,84 +82,6 @@ class _PagesState extends State<Pages> {
             });
           },
         ),
-      ),
-    );
-  }
-
-  Card planCard(Plan plan, bool isSmallScreen, BuildContext context) {
-    String? sessionsData =
-        plan.sessions! > 0 ? '| ${plan.sessions} sessions' : '';
-    int taxAmount = 0;
-    if (plan.fees != null) {
-      taxAmount = (plan.fees! * 0.25).ceil();
-    }
-    return Card(
-      elevation: 0,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.03,
-          vertical: MediaQuery.of(context).size.height * 0.01,
-        ),
-        width: isSmallScreen
-            ? MediaQuery.of(context).size.width * 0.7
-            : MediaQuery.of(context).size.width * 0.27,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(10.0)),
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Center(
-                child: CircleAvatar(
-                    radius: MediaQuery.of(context).size.width <= 900
-                        ? MediaQuery.of(context).size.width * 0.04
-                        : MediaQuery.of(context).size.width * 0.02,
-                    child: AutoSizeText(
-                      plan.name[0].toUpperCase(),
-                      maxLines: 1,
-                      style: const TextStyle(fontSize: 25.0),
-                    )),
-              ),
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                AutoSizeText(
-                  plan.name,
-                  maxLines: 1,
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-                AutoSizeText(
-                  '${plan.duration} ${plan.durationUnit} $sessionsData',
-                  style: const TextStyle(fontSize: 13.0),
-                ),
-              ]),
-              Column(
-                children: [
-                  AutoSizeText(
-                    'Rs.${plan.fees}',
-                    style: const TextStyle(fontSize: 18.0),
-                  ),
-                  AutoSizeText(
-                    ' + tax Rs.${taxAmount.toString()}',
-                    style: const TextStyle(fontSize: 13.0),
-                  ),
-                  SizedBox(
-                    width: isSmallScreen
-                        ? MediaQuery.of(context).size.width * 0.2
-                        : MediaQuery.of(context).size.width * 0.07,
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(0)),
-                        child: const AutoSizeText(
-                          'Book',
-                          overflow: TextOverflow.clip,
-                          softWrap: false,
-                          style: TextStyle(fontSize: 10.0),
-                        )),
-                  )
-                ],
-              ),
-            ]),
       ),
     );
   }

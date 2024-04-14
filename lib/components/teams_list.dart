@@ -1,6 +1,7 @@
 import 'package:atzos_assignment/constants/spacing_constants.dart';
 import 'package:atzos_assignment/screens/home_page/home_page.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
+import 'package:atzos_assignment/screens/home_page/team_components.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -42,8 +43,8 @@ class _TeamsListState extends State<TeamsList> {
               runSpacing: MediaQuery.of(context).size.height * 0.03,
               children: displayTeam.map((member) {
                 return widget.isSmallScreen
-                    ? const HomePage().smallTeamWidget(member, context)
-                    : const HomePage().largeTeamWidget(member, context);
+                    ? TeamComponents().smallTeamWidget(member, context)
+                    : TeamComponents().largeTeamWidget(member, context);
               }).toList(),
             ),
           SpacingConstants().heightBetweenFieldsSmall(context),
