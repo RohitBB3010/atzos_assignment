@@ -1,7 +1,6 @@
 import 'package:atzos_assignment/constants/spacing_constants.dart';
-import 'package:atzos_assignment/screens/home_page/home_page.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
-import 'package:atzos_assignment/screens/home_page/home_page_components.dart';
+import 'package:atzos_assignment/screens/home_page/home_page_components/home_classes.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
 import 'package:atzos_assignment/constants/spacing_constants.dart';
-import 'package:atzos_assignment/screens/home_page/dateTIme_formatting_functions.dart';
+import 'package:atzos_assignment/screens/home_page/home_page_components/dateTIme_formatting_functions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:atzos_assignment/screens/home_page/home_page_classes.dart';
