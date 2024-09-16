@@ -1,3 +1,4 @@
+import 'package:atzos_assignment/screens/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,7 +10,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        fontFamily: 'Monsterrat',
+      ),
       home: MyHomePage(),
     );
   }
@@ -25,6 +30,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return HomePage();
   }
 }
